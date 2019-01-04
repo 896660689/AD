@@ -1,0 +1,66 @@
+#!/bin/sh
+## Adaptation Grassland in Lucheng 2019.01.05
+
+echo -e "*****************************************************"
+echo -e "\e[1;31m     Adbyby 辅助脚本 \e[0m"
+echo -e "*****************************************************\n"
+
+echo -e "\e[1;33m >	1. 安装 \e[1;33mpadavan \033[41;37m  Adbyby \e[0m\n"
+
+echo -e "\e[1;31m >	2. 更新 \e[1;33mpadavan \033[44;37m Adbyby 规则 \e[0m\n"
+
+echo -e "\e[1;33m >	3. 卸载 \e[1;33mpadavan Adbyby \e[0m\n"
+
+echo -e "\e[1;31m >	0. \033[41;37m退出\e[0m\n"
+
+echo -e -n "\e[44;37m 请输入数字继续执行: \e[0m" 
+read Function_options
+if [ "$Function_options" == "1" ]; then
+	if [ ! -d "/tmp/ad_an" ]; then
+		if [ -f "/tmp/ad_an" ]; then
+			echo -e "\e[1;34m Adbyby 安装完成;开始运行 \e[0m\n" && sleep 3
+		else
+			echo -e "\e[1;34m 下载 Adbyby 脚本安装 \e[0m\n"
+			wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/LS-SSR/master/ad_an -O /tmp/ad_an && sleep 2
+		fi
+		chmod 777 /tmp/ad_an;sh /tmp/ad_an
+		[ -f /tmp/ad_an ] && rm -f /tmp/ad_an;sleep 6 && sh /tmp/Ad_Install
+	else
+		chmod 777 /tmp/ad_an;sh /tmp/ad_an
+		echo -e "\e[1;34m 安装完成;开始运行 \e[0m\n" && sleep 3
+		[ -f /tmp/ad_an ] && rm -f /tmp/ad_an;sleep 6 && sh /tmp/Ad_Install
+	fi
+fi
+
+if [ "$Function_options" == "2" ]; then
+	if [ ! -f "/tmp/ad_up" ]; then
+		echo -e "\e[1;34m 没有发现 Ad_up,开始下载更新文件 \e[0m\n" && sleep 3
+		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/LS-SSR/master/ad_up -O /tmp/ad_up && sleep 2
+		sh /tmp/ad_up
+	else
+		sh /tmp/ad_up
+		echo -e "\e[1;34m 更新已完成,返回主菜单 \e[0m\n" && sleep 3
+	fi
+	[ -f /tmp/ad_up ] && rm -f /tmp/ad_up;sleep 3 && sh /tmp/Ad_Install
+fi
+
+if [ "$Function_options" == "3" ]; then
+	if [ ! -f "/tmp/ad_stop" ]; then
+		echo -e "\e[1;34m 没有发现卸载文件,开始下载 \e[0m\n" && sleep 3
+		wget --no-check-certificate https://raw.githubusercontent.com/896660689/LS-SSR/master/ad_stop -O /tmp/ad_stop && sleep 2
+		chmod 777 /tmp/ad_stop;sh /tmp/ad_stop
+	else
+		chmod 777 /tmp/ad_stop;sh /tmp/ad_stop
+		echo -e "\e[1;34m 卸载已完成,返回主菜单 \e[0m\n" && sleep 3
+	fi
+	[ -f /tmp/ad_stop ] && rm -f /tmp/ad_stop;sleep 3 && sh /tmp/Ad_Install
+fi
+
+if [ "$Function_options" == "0" ]; then
+	echo -e "*****************************************************"
+	echo -e "*                   Time:`date +'%Y-%m-%d'`                    *"
+	echo -e "*****************************************************\n"
+	[ -f /tmp/ad_an ] && rm -f /tmp/ad_an; [ -f /tmp/ad_up ] && rm -f /tmp/ad_up; [ -f /tmp/ad_stop ] && rm -f /tmp/ad_stop
+	[ -f /tmp/ad_install ] && rm -f /tmp/Ad_Install
+	
+fi
