@@ -2,18 +2,36 @@
 ## Adaptation Grassland in Lucheng 2018.12.11
 
 username=`nvram get http_username`
+ad_home="/etc/storage/adb"
 adbyby_plus="/etc/storage/adb/adupdate.sh"
 
 echo -e -n "\033[41;37m 开始构建 Adbyby 启动文件......\033[0m\n"
 sleep 3
-if [ ! -d "/etc/storage/adb" ]; then
+if [ ! -d "$ad_home" ]; then
 	echo -e "\e[1;36m 创建 'Adbyby' 文件夹 \e[0m\n"
-	mkdir -p -m 777 /etc/storage/adb
+	mkdir -p -m 777 "$ad_home"
 fi
 
-if [ ! -d "/etc/storage/adb/data" ]; then
-	mkdir -p -m 755 /etc/storage/adb/data
+if [ ! -f "$ad_home/bin/adbyby" ]; then
+	logger -t "adbyby" "adbyby 程序文件不存在,准备下载..."
+	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/7620n.tar.gz -O /tmp/7620n.tar.gz && sleep 2
+	tar -xzf "/tmp/7620n.tar.gz" -C "$ad_home"
+	echo -e "\e[1;34m adbyby 下载完成并成功解压文件 \e[0m\n" && sleep 3
+else
+	logger -t "adbyby" "adbyby 程序文件不存在,准备下载..."
+	if [ -f "$ad_home/bin/adbyby" ]; then
+		echo -e "\e[1;34m adbyby 开始运行 \e[0m\n"
+	else
+		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/7620n.tar.gz -O /tmp/7620n.tar.gz && sleep 2
+		
+	fi
+	[ -f /tmp/ad_an ] && rm -f /tmp/ad_an;sleep 6 && sh /tmp/Ad_Install
+	echo -e "\e[1;34m adbyby 下载完成并成功解压文件 \e[0m\n" && sleep 3
 fi
+
+logger -t "adbyby" "adbyby 安装完成开始运行"
+
+
 
 if [ -f $adbyby_plus ]
 	then
