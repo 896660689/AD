@@ -1,7 +1,6 @@
 #!/bin/sh
 ## Adaptation Grassland in Lucheng 2018.12.11
 
-username=`nvram get http_username`
 ad_home="/etc/storage/adb"
 ad_start="$ad_home/adbyby.sh"
 
@@ -18,49 +17,12 @@ if [ ! -f "$ad_home/bin/adbyby" ]; then
 	tar -xzf "/tmp/7620n.tar.gz" -C "$ad_home"
 	echo -e "\e[1;34m adbyby 下载完成并成功解压文件 \e[0m\n" && sleep 3
 else
-	logger -t "adbyby" "adbyby 程序文件不存在,准备下载..."
-	if [ -f "$ad_home/bin/adbyby" ]; then
-		echo -e "\e[1;34m adbyby 开始运行 \e[0m\n"
+	if [ -f "$ad_start" ]; then
+		logger -t "adbyby" "adbyby 开始启动"
 	else
 		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbyby.sh -O /tmp/tmp_adbyby.sh
-		
+		cp -f /tmp/tmp_adbyby.sh "$ad_start"	
 	fi
 	[ -f /tmp/tmp_adbyby.sh ] && rm -f /tmp/tmp_adbyby.sh;sleep 3 && sh "$ad_start"
-	echo -e "\e[1;34m adbyby 下载完成并成功解压文件 \e[0m\n" && sleep 3
+	echo -e "\e[1;34m 开始运行 adbyby 启动文件 \e[0m\n" && sleep 3
 fi
-
-logger -t "adbyby" "adbyby 安装完成开始运行"
-
-
-
-if [ -f $adbyby_plus ]
-	then
-		sh $adbyby_plus
-	else
-  	wget --no-check-certificate https://raw.githubusercontent.com/896660689/LS-SSR/master/post_wan_script.sh -O \
-  	  	/etc/storage/adb/post_wan_script.sh
-  	wget --no-check-certificate https://raw.githubusercontent.com/896660689/LS-SSR/master/adupdate.sh -O \
-  	  	$adbyby_plus && chmod 777 $adbyby_plus && sh $adbyby_plus
-	wget --no-check-certificate https://raw.githubusercontent.com/adbyby/xwhyc-rules/master/lazy.txt -O \
-  	  	/etc/storage/adb/data/lazy.txt && chmod 644 /etc/storage/adb/data/lazy.txt
-	wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt -O \
-  	  	/etc/storage/adb/data/video.txt && chmod 644 /etc/storage/adb/data/video.txt
-fi
-
-grep "adupdate" /etc/storage/post_wan_script.sh
-if [ ! "$?" -eq "0" ]
-then
-	cp -f /etc/storage/adb/post_wan_script.sh /etc/storage/post_wan_script.sh
-fi
-
-grep -q "adupdate" "/etc/storage/cron/crontabs/$username"
-if [ ! "$?" -eq "0" ]
-then
-	sed -i '/adupdate/d' /etc/storage/cron/crontabs/$username
-	echo -e "\e[1;33m 添加定时计划更新任务 \e[0m\n"
-	sed -i '$a 0 6 * * *    /etc/storage/adb/adupdate.sh &' /etc/storage/cron/crontabs/$username
-	sleep 2 && killall crond;/usr/sbin/crond
-fi
-
-echo -e "\033[41;37m Adbyby plus 安装完成,开始运行... \e[0m\n"
-mtd_storage.sh save
