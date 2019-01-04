@@ -1,3 +1,67 @@
+#!/bin/sh
+
+port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
+logger -t "adbyby" "找到$port个8118透明代理端口，正在关闭。"
+while [[ "$port" -ge 1 ]]
+do
+	iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+	port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
+done
+logger -t "adbyby" "已关闭全部8118透明代理端口。"
+touch /tmp/cron_adb.lock
+killall adbyby
+sed -i '/adbyby/d' /etc/storage/post_wan_script.sh
+logger -t "adbyby" "adbyby进程已成功关闭。"
+
+sed -i '/adbchk/d' /etc/storage/cron/crontabs/$http_username
+
+	export PATH=/opt/sbin:/opt/bin:/usr/sbin:/usr/bin:/sbin:/bin
+	export LD_LIBRARY_PATH=/opt/lib:/lib
+	
+if [ -s "$adbybydir/adbb/bin/adbyby" ] ;then
+		if [ "$adbyby_whost" != "" ] ; then
+			logger -t "adbyby" "添加过滤白名单地址"
+			logger -t "adbyby" "加白地址:$adbyby_whost"
+			chmod 777 "$adbybydir/adbb/bin/adhook.ini"
+			sed -Ei '/whitehost=/d' $adbybydir/adbb/bin/adhook.ini
+			echo whitehost=$adbyby_whost >> $adbybydir/adbb/bin/adhook.ini
+			echo @@\|http://\$domain=$(echo $adbyby_whost | tr , \|) >> $adbybydir/adbb/bin/data/user.txt
+		else
+			logger -t "adbyby" "过滤白名单地址未定义,已忽略。"
+		fi
+		logger -t "adbyby" "正在启动adbyby进程。"
+		chmod 777 "$adbybydir/adbb/bin/adbyby"
+		$adbybydir/adbb/bin/adbyby&
+		sleep 5
+		check=$(ps | grep "$adbybydir/adbb/bin/adbyby" | grep -v "grep" | wc -l)
+		if [ "$check" = 0 ]; then
+			logger -t "adbyby" "adbyby启动失败。"
+			nvram set ad_enable="0"
+			exit 0
+		else
+			logger -t "adbyby" "添加8118透明代理端口。"
+			iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+			logger -t "adbyby" "adbyby进程守护已启动。"
+		fi
+	fi	
+sed -i '/adbyby/d' /etc/storage/post_wan_script.sh
+cat >> /etc/storage/post_wan_script.sh << EOF
+/usr/bin/adbyby.sh&
+EOF
+#koolproxy处理结束
+#守护进程
+sleep 2
+sed -i '/adbchk/d' /etc/storage/cron/crontabs/$http_username
+cat >> /etc/storage/cron/crontabs/$http_username << EOF
+5 * * * * /bin/sh /usr/bin/adbchk.sh >/dev/null 2>&1
+EOF
+
+
+
+	
+
+addir=
+
 ad
 mv -f /tmp/hsfq_script_up.sh /tmp/hsfq_script.sh && rm -f hsfq_script_up.txt
 cp -f /etc/storage/dnsmasq.d/resolv.conf /tmp/resolv.conf
