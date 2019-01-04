@@ -3,7 +3,7 @@
 
 username=`nvram get http_username`
 ad_home="/etc/storage/adb"
-adbyby_plus="/etc/storage/adb/adupdate.sh"
+ad_start="$ad_home/adbyby.sh"
 
 echo -e -n "\033[41;37m 开始构建 Adbyby 启动文件......\033[0m\n"
 sleep 3
@@ -22,10 +22,10 @@ else
 	if [ -f "$ad_home/bin/adbyby" ]; then
 		echo -e "\e[1;34m adbyby 开始运行 \e[0m\n"
 	else
-		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/7620n.tar.gz -O /tmp/7620n.tar.gz && sleep 2
+		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbyby.sh -O /tmp/tmp_adbyby.sh
 		
 	fi
-	[ -f /tmp/ad_an ] && rm -f /tmp/ad_an;sleep 6 && sh /tmp/Ad_Install
+	[ -f /tmp/tmp_adbyby.sh ] && rm -f /tmp/tmp_adbyby.sh;sleep 3 && sh "$ad_start"
 	echo -e "\e[1;34m adbyby 下载完成并成功解压文件 \e[0m\n" && sleep 3
 fi
 
