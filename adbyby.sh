@@ -3,7 +3,7 @@
 username=`nvram get http_username`
 Firewall_rules="/etc/storage/post_iptables_script.sh"
 Run_script="/etc/storage/post_wan_script.sh"
-ad_home="/etc/storage/adb"
+ad_home="/tmp/adb"
 
 if [ -f "$ad_home/bin/adbyby" ]; then
 	port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
@@ -23,7 +23,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 		else
 			echo -e "\e[1;31m 添加定时计划更新任务 \e[0m"
 			cat >> /etc/storage/cron/crontabs/$http_username << EOF
-5 * * * * /bin/sh /etc/storage/adb/ad_up >/dev/null 2>&1
+5 * * * * /bin/sh /tmp/adb/ad_up >/dev/null 2>&1
 EOF
 		fi
 
