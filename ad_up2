@@ -34,7 +34,7 @@ if [ ! -f "/tmp/tmp_ad_up" ];then
 			sleep 10
 		fi
 	done
-	rm -f /tmp/adbyby.mem /tmp/lazy.txt /tmp/video.txt /tmp/local-md5.json /tmp/md5.json
-	rm -f $ad_home/bin/data/*.bak
-	sleep 10 && $ad_home/bin/adbyby restart
 fi
+rm -f /tmp/adbyby.mem /tmp/lazy.txt /tmp/video.txt /tmp/local-md5.json /tmp/md5.json
+rm -f $ad_home/bin/data/*.bak
+sleep 10 && $ad_home/bin/adbyby restart
