@@ -1,19 +1,101 @@
 #!/bin/sh
+## Adaptation Grassland in Lucheng 2019.01.05
+username=`nvram get http_username`
+ad_home="/etc/storage/adb"
 
-port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
-logger -t "adbyby" "找到$port个8118透明代理端口，正在关闭。"
-while [[ "$port" -ge 1 ]]
-do
-	iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+if [ ! -f "$ad_home/bin/adbyby" ]; then
 	port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
-done
-logger -t "adbyby" "已关闭全部8118透明代理端口。"
-touch /tmp/cron_adb.lock
-killall adbyby
-sed -i '/adbyby/d' /etc/storage/post_wan_script.sh
-logger -t "adbyby" "adbyby进程已成功关闭。"
+	logger -t "adbyby" "找到$port个8118透明代理端口，正在关闭。"
+	while [[ "$port" -ge 1 ]]
+	do
+		iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+		port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
+	done
+	echo -e "\e[1;31m 关闭 adbyby 进程，代理端口任务 \e[0m"
+	if [ -f "/etc/storage/cron/crontabs/$username" ]; then
+		grep "ad_up" "/etc/storage/cron/crontabs/$username"
+		if [ $? -eq 0 ]; then
+			sed -i '/ad_up/d' /etc/storage/cron/crontabs/$http_username
+		else
+			echo -e "\e[1;31m 添加定时计划更新任务 \e[0m"
+			cat >> /etc/storage/cron/crontabs/$http_username << EOF
+5 * * * * /bin/sh /usr/bin/ad_up >/dev/null 2>&1
+EOF
+		fi
 
+	fi
+	if [ -f "/etc/storage/post_iptables_script.sh" ]; then
+		grep "8118" "/etc/storage/post_iptables_script.sh"
+		if [ $? -eq 0 ]; then
+			sed -i '/8118/d' "/etc/storage/post_iptables_script.sh"
+		else
+			echo -e "\e[1;31m  添加防火墙端口规则 \e[0m"
+			cat >> "/etc/storage/post_iptables_script.sh" << EOF
+iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+EOF
+			logger -t "adbyby" "adbyby进程守护已启动。"
+		fi
+
+	fi
+	touch /tmp/cron_adb.lock
+	killall adbyby && logger -t "adbyby" "adbyby进程已成功关闭。"
+
+
+	if [ "$adbyby_whost" != "" ] ; then
+			logger -t "adbyby" "添加过滤白名单地址"
+			logger -t "adbyby" "加白地址:$adbyby_whost"
+			chmod 777 "$adbybydir/adbb/bin/adhook.ini"
+			sed -Ei '/whitehost=/d' $adbybydir/adbb/bin/adhook.ini
+			echo whitehost=$adbyby_whost >> $adbybydir/adbb/bin/adhook.ini
+			echo @@\|http://\$domain=$(echo $adbyby_whost | tr , \|) >> $adbybydir/adbb/bin/data/user.txt
+		else
+			logger -t "adbyby" "过滤白名单地址未定义,已忽略。"
+		fi
+		logger -t "adbyby" "正在启动adbyby进程。"
+		chmod 777 "$adbybydir/adbb/bin/adbyby"
+		$adbybydir/adbb/bin/adbyby&
+		sleep 5
+		check=$(ps | grep "$adbybydir/adbb/bin/adbyby" | grep -v "grep" | wc -l)
+		if [ "$check" = 0 ]; then
+			logger -t "adbyby" "adbyby启动失败。"
+			nvram set ad_enable="0"
+			exit 0
+		else
+			logger -t "adbyby" "添加8118透明代理端口。"
+			iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+			logger -t "adbyby" "adbyby进程守护已启动。"
+		fi
+else
+	echo -e "\e[1;31m  没有发现 adbyby 程序，没能启动 \e[0m"
+fi
+
+
+		
+		
+		
+		
 sed -i '/adbchk/d' /etc/storage/cron/crontabs/$http_username
+cat >> /etc/storage/cron/crontabs/$http_username << EOF
+5 * * * * /bin/sh /usr/bin/adbchk.sh >/dev/null 2>&1
+EOF
+
+if [ -f "/etc/storage/post_iptables_script.sh" ]; then
+	echo -e "\e[1;36m 添加防火墙端口转发规则 \e[0m\n"
+	sed -i '/DNAT/d' /etc/storage/post_iptables_script.sh
+	sed -i '/iptables-save/d' /etc/storage/post_iptables_script.sh
+	sed -i '$a /bin/iptables-save' /etc/storage/post_iptables_script.sh
+fi
+
+
+echo "/bin/iptables -t nat -A PREROUTING -p tcp --dport 53 -j DNAT --to $route_vlan" >> /etc/storage/post_iptables_script.sh
+echo "/bin/iptables -t nat -A PREROUTING -p udp --dport 53 -j DNAT --to $route_vlan" >> /etc/storage/post_iptables_script.sh
+if [ -f "/etc/storage/post_iptables_script.sh" ]; then
+	sed -i '/resolv.conf/d' /etc/storage/post_iptables_script.sh
+	sed -i '/restart_dhcpd/d' /etc/storage/post_iptables_script.sh
+	sed -i '$a cp -f /etc/storage/dnsmasq.d/resolv.conf /tmp/resolv.conf' /etc/storage/post_iptables_script.sh
+	sed -i '$a sed -i "/#/d" /tmp/resolv.conf;mv -f /tmp/resolv.conf /etc/resolv.conf' /etc/storage/post_iptables_script.sh
+	sed -i '$a restart_dhcpd' /etc/storage/post_iptables_script.sh
+fi
 
 	export PATH=/opt/sbin:/opt/bin:/usr/sbin:/usr/bin:/sbin:/bin
 	export LD_LIBRARY_PATH=/opt/lib:/lib
