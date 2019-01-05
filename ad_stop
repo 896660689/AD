@@ -38,6 +38,6 @@ if [ -d "$ad_home" ]; then
 	restart_dhcpd && echo "adbyby 卸载完成" && logger -t "【adbyby】" "adbyby 已卸载完成...。"
 	exit 0
 else
-	echo "adbyby 没有v发现安装程序" && logger -t "【adbyby】" "adbyby 没有v发现安装程序..."
+	echo "adbyby 没有发现安装程序" && logger -t "【adbyby】" "adbyby 没有v发现安装程序..."
 	[ ! -d "$ad_home" ] && exit 0
 fi
