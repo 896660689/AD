@@ -3,7 +3,7 @@
 
 ad_home="/etc/storage/adb"
 tmpdir="/tmp/ad"
-adbyby_data="/etc/storage/adb/data"
+adbyby_data="/etc/storage/adb/bin/data"
 logger_title="[Adbyby]"
 
 restart_ad(){
