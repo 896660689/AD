@@ -81,4 +81,4 @@ EOF
 else
 	echo -e "\e[1;31m  没有发现 adbyby 程序，没能启动 \e[0m"	 
 fi
-sleep 3 && rm -f /tmp/cron_adb.lock
+sleep 8 && rm -f /tmp/cron_adb.lock
