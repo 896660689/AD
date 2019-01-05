@@ -33,12 +33,12 @@ if [ "$Function_options" == "1" ]; then
 fi
 
 if [ "$Function_options" == "2" ]; then
-	if [ ! -f "/tmp/ad_up" ]; then
+	if [ ! -f "/etc/storage/adb/ad_up" ]; then
 		echo -e "\e[1;34m 没有发现 Ad_up,开始下载更新文件 \e[0m\n" && sleep 3
 		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_up -O /tmp/ad_up && sleep 2
 		sh /tmp/ad_up
 	else
-		sh /tmp/ad_up
+		sh /etc/storage/adb/ad_up
 		echo -e "\e[1;34m 更新已完成,返回主菜单 \e[0m\n" && sleep 3
 	fi
 	[ -f /tmp/ad_up ] && rm -f /tmp/ad_up; sleep 3 && sh /tmp/Ad_Install
