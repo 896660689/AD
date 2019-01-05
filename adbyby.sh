@@ -23,7 +23,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 		else
 			echo -e "\e[1;31m 添加定时计划更新任务 \e[0m"
 			cat >> /etc/storage/cron/crontabs/$http_username << EOF
-5 * * * * /bin/sh /tmp/adb/ad_up >/dev/null 2>&1
+5 * * * * /bin/sh /tmp/adb/ad_gz >/dev/null 2>&1
 EOF
 		fi
 
