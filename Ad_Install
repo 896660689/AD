@@ -45,7 +45,7 @@ if [ "$Function_options" == "2" ]; then
 fi
 
 if [ "$Function_options" == "3" ]; then
-	if [ ! -f "/etc/storage/adb/ad_stop" ]; then
+	if [ -f "/etc/storage/adb/ad_stop" ]; then
 		echo -e "\e[1;34m 没有发现卸载文件,开始下载 \e[0m\n" && sleep 3
 		wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/ad_stop -O /tmp/tmp_ad_stop && sleep 2
 		chmod 777 /tmp/tmp_ad_stop; sh /tmp/tmp_ad_stop
