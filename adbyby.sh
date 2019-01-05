@@ -19,7 +19,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	if [ -f "/etc/storage/cron/crontabs/$username" ]; then
 		grep "ad_up" /etc/storage/cron/crontabs/$username
 		if [ $? -eq 0 ]; then
-			sed -i '/ad_up/d' /etc/storage/cron/crontabs/$http_username
+			sed -i '/ad_gz/d' /etc/storage/cron/crontabs/$http_username
 		else
 			echo -e "\e[1;31m 添加定时计划更新任务 \e[0m"
 			cat >> /etc/storage/cron/crontabs/$http_username << EOF
