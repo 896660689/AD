@@ -19,8 +19,8 @@ if [ ! -f "$ad_home/bin/adbyby" ]; then
 	sleep 2 && mv -f /tmp/tmp_ad_whost $ad_home/ad_whost && chmod 755 $ad_home/ad_whost
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_stop -O /tmp/tmp_ad_stop
 	sleep 2 && mv -f /tmp/tmp_ad_stop $ad_home/ad_stop && chmod 755 $ad_home/ad_stop
-	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbyby.sh -O /tmp/tmp_adbyby.sh
-	sleep 2 && mv -f /tmp/tmp_adbyby.sh $ad_home/adbyby.sh && chmod 777 $ad_home/adbyby.sh
+	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbyby.sh -O /tmp/tmp_adbyby
+	sleep 2 && mv -f /tmp/tmp_adbyby $ad_home/adbyby.sh && chmod 777 $ad_home/adbyby.sh
 	sleep 2 && tar -xzf "/tmp/7620n.tar.gz" -C "$ad_home"
 	sleep 2 && $ad_home/ad_up
 	echo -e "\e[1;34m adbyby 下载完成并成功解压文件 \e[0m\n" && sleep 3; sh "$ad_home/adbyby.sh"
@@ -28,8 +28,8 @@ else
 	if [ -f "$ad_home/adbyby.sh" ]; then
 		logger -t "adbyby" "adbyby 开始启动"
 	else
-		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbyby.sh -O /tmp/tmp_adbyby.sh
-		cp -f /tmp/tmp_adbyby.sh "$ad_home/adbyby.sh"	
+		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbyby.sh -O /tmp/tmp_adbyby
+		cp -f /tmp/tmp_adbyby "$ad_home/adbyby.sh"	
 	fi
 	sleep 3 && sh $ad_home/bin/adbyby.sh
 	echo -e "\e[1;34m 开始运行 adbyby 启动文件 \e[0m\n" && sleep 3
