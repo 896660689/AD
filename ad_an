@@ -20,10 +20,10 @@ if [ ! -f "$ad_home/bin/adbyby" ]; then
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_stop -O /tmp/tmp_ad_stop
 	sleep 2 && mv -f /tmp/tmp_ad_stop $ad_home/ad_stop && chmod 755 $ad_home/ad_stop
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbyby.sh -O /tmp/tmp_adbyby.sh
-	sleep 2 && mv -f /tmp/tmp_adbyby.sh $ad_home/adbyby.sh && chmod 755 $ad_home/adbyby.sh
+	sleep 2 && mv -f /tmp/tmp_adbyby.sh $ad_home/adbyby.sh && chmod 777 $ad_home/adbyby.sh
 	sleep 2 && tar -xzf "/tmp/7620n.tar.gz" -C "$ad_home"
 	sleep 2 && $ad_home/ad_up
-	echo -e "\e[1;34m adbyby 下载完成并成功解压文件 \e[0m\n" && sleep 3
+	echo -e "\e[1;34m adbyby 下载完成并成功解压文件 \e[0m\n" && sleep 3; sh "$ad_home/adbyby.sh"
 else
 	if [ -f "$ad_home/adbyby.sh" ]; then
 		logger -t "adbyby" "adbyby 开始启动"
