@@ -37,7 +37,7 @@ EOF
 			cat >> $Firewall_rules << EOF
 iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 EOF
-			logger -t "adbyby" "adbyby 进程守护已启动..."
+			restart_dhcpd && logger -t "adbyby" "adbyby 进程守护已启动..."
 		fi
 
 	fi
@@ -71,6 +71,7 @@ EOF
 	fi
 	logger -t "adbyby" "adbyby 开始运行..."
 	chmod 777 "$ad_home/bin/adbyby" && $ad_home/bin/adbyby&
+	echo -e "\033[41;37m adbyby 开始运行... \e[0m\n"
 	sleep 5
 	check=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" | wc -l)
 	if [ "$check" = 0 ]; then
@@ -81,5 +82,4 @@ else
 	echo -e "\e[1;31m  没有发现 adbyby 程序，没能启动 \e[0m"	 
 fi
 sleep 3 && rm -f /tmp/cron_adb.lock
-echo -e "\033[41;37m adbyby 开始运行... \e[0m\n"
 mtd_storage.sh save
