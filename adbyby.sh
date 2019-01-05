@@ -70,7 +70,7 @@ EOF
 		fi
 	fi
 	logger -t "adbyby" "adbyby 开始运行..."
-	chmod 777 "$ad_home/bin/adbyby" && $ad_home/bin/adbyby&
+	chmod 777 "$ad_home/bin/adbyby" && /tmp/adb/bin/adbyby
 	echo -e "\033[41;37m adbyby 开始运行... \e[0m\n"
 	sleep 5 && mtd_storage.sh save
 	check=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" | wc -l)
