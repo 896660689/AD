@@ -69,6 +69,9 @@ EOF
 			echo -e "\e[1;31m 过滤白名单地址未定义,已忽略 \e[0m"
 		fi
 	fi
+	[ -f /tmp/7620n.tar.gz ] && rm -f /tmp/7620n.tar.gz
+	[ -f /tmp/Ad_Install ] && rm -f /tmp/Ad_Install
+	[ -f /tmp/ad_an ] && rm -f /tmp/ad_an
 	logger -t "adbyby" "adbyby 开始运行..."
 	chmod 777 "$ad_home/bin/adbyby" && /tmp/adb/bin/adbyby
 	echo -e "\033[41;37m adbyby 开始运行... \e[0m\n"
