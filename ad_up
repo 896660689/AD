@@ -1,7 +1,7 @@
 #!/bin/sh
 # Compile:by-lanse	2019-01-05
 
-ad_home="/etc/storage/adb"
+ad_home="/tmp/adb"
 tmpdir="/tmp/ad"
 logger_title="[Adbyby]"
 
