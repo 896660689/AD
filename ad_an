@@ -13,7 +13,7 @@ fi
 if [ ! -f "$ad_home/bin/adbyby" ]; then
 	logger -t "adbyby" "adbyby 程序文件不存在,准备下载..."
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/7620n.tar.gz -O /tmp/7620n.tar.gz && sleep 2
-	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_up -O /tmp/tmp_ad_up
+	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_up2 -O /tmp/tmp_ad_up
 	sleep 2 && mv -f /tmp/tmp_ad_up $ad_home/ad_up && chmod 755 $ad_home/ad_up
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_whost -O /tmp/tmp_ad_whost
 	sleep 2 && mv -f /tmp/tmp_ad_whost $ad_home/ad_whost && chmod 755 $ad_home/ad_whost
