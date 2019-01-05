@@ -17,7 +17,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	touch /tmp/cron_adb.lock
 	killall adbyby && logger -t "adbyby" "adbyby进程已成功关闭。"
 	if [ -f "/etc/storage/cron/crontabs/$username" ]; then
-		grep "ad_up" "/etc/storage/cron/crontabs/$username"
+		grep "ad_up" /etc/storage/cron/crontabs/$username
 		if [ $? -eq 0 ]; then
 			sed -i '/ad_up/d' /etc/storage/cron/crontabs/$http_username
 		else
