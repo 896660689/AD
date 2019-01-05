@@ -80,7 +80,7 @@ download_video(){
 	rm_cache
 	mkdir $tmpdir
 	logger -t "${logger_title}" "自动检测规则更新中" && cd $tmpdir
-		if [ ! -f $tmpdir/lazy.txt ]; then
+	if [ ! -f $tmpdir/lazy.txt ]; then
 		wget --no-check-certificate https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt -O $tmpdir/lazy.txt;chmod 775 $tmpdir/lazy.txt
 		cat $tmpdir/lazy.txt $adbyby_data/lazy.txt | awk '{ print$0}' | sort | uniq -u > $tmpdir/lazy_1.txt && sleep 2
 		if [ ! -s "/tmp/hsfq_script_up.txt" ]; then
@@ -92,34 +92,19 @@ download_video(){
 			echo -e "\033[41;37m lazy 规则更新完成\033[0m\n" && sleep 3
 		fi
 	fi
-/*
-	logger -t "${logger_title}" "自动检测规则更新中" && cd $tmpdir
-		if [ ! -f $tmpdir/video.txt ]; then
-		wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt -O $tmpdir/video.txt;chmod 775 $tmpdir/video.txt
-		cat $tmpdir/video.txt $adbyby_data/video.txt | awk '{ print$0}' | sort | uniq -u > $tmpdir/lazy_1.txt && sleep 2
-		if [ ! -s "/tmp/hsfq_script_up.txt" ]; then
-			echo -e "\e[1;33m video 规则已为最新,无需更新.\e[0m\n" && rm -f $tmpdir/video.txt && rm -f $adbyby_data/video_1.txt
-		else
-			rm -f $adbyby_data/video.txt
-			cp -f $tmpdir/video.txt $adbyby_data/video.txt
-			mv -f $tmpdir/video.txt $adbyby_data/video.txt && rm -f $adbyby_data/video_1.txt
-			echo -e "\033[41;37m video 规则更新完成\033[0m\n" && sleep 3
-		fi
-	fi
-*/
 	logger -t "${logger_title}" "自动检测 video 规则更新中" && cd $tmpdir
 	md5sum $ad_home/bin/data/lazy.txt $ad_home/bin/data/video.txt > local-md5.json
 	wget -q -c -P $tmpdir 'https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/md5.json'
-		if [ "$?"x != "0"x ]; then
-			logger -t "${logger_title}" "获取在线规则时间失败" && exit 0       
-		else
-			## lazy_local=$(grep 'lazy' local-md5.json | awk -F' ' '{print $1}')
-			video_local=$(grep 'video' local-md5.json | awk -F' ' '{print $1}')  
-			## lazy_online=$(sed  's/":"/\n/g' md5.json  |  sed  's/","/\n/g' | sed -n '2p')
-			video_online=$(sed  's/":"/\n/g' md5.json  |  sed  's/","/\n/g' | sed -n '4p')
-			logger -t "${logger_title}"  "获取在线规则MD5成功，正在判断是否有更新中"
-			sed -i "s/=video/=none/g" $ad_home/bin/adhook.ini
-			## sed -i "s/=video,lazy/=none/g" $ad_home/bin/adhook.sample.ini
-			judge_update
-		fi
-	exit 0
+	if [ "$?"x != "0"x ]; then
+		logger -t "${logger_title}" "获取在线规则时间失败" && exit 0       
+	else
+		## lazy_local=$(grep 'lazy' local-md5.json | awk -F' ' '{print $1}')
+		video_local=$(grep 'video' local-md5.json | awk -F' ' '{print $1}')  
+		## lazy_online=$(sed  's/":"/\n/g' md5.json  |  sed  's/","/\n/g' | sed -n '2p')
+		video_online=$(sed  's/":"/\n/g' md5.json  |  sed  's/","/\n/g' | sed -n '4p')
+		logger -t "${logger_title}"  "获取在线规则MD5成功，正在判断是否有更新中"
+		sed -i "s/=video/=none/g" $ad_home/bin/adhook.ini
+		## sed -i "s/=video,lazy/=none/g" $ad_home/bin/adhook.sample.ini
+		judge_update
+	fi
+exit 0
