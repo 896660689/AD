@@ -1,51 +1,125 @@
-	
-		
-mv -f /tmp/hsfq_script_up.sh /tmp/hsfq_script.sh && rm -f hsfq_script_up.txt
-cp -f /etc/storage/dnsmasq.d/resolv.conf /tmp/resolv.conf
-logger -t "adbyby" "adbyby 安装完成开始运行"
+#!/bin/sh
+# Compile:by-lanse	2019-01-05
 
-echo -e -n "\033[41;37m 开始构建翻墙平台......\033[0m\n"
-sleep 3
-if [ ! -d "/etc/storage/dnsmasq.d" ]; then
-	mkdir -p -m 755 /etc/storage/dnsmasq.d
-	echo -e "\e[1;36m 创建 dnsmasq 规则脚本文件夹 \e[0m\n"
-	cp -f /tmp/hsfq_script.sh /etc/storage/dnsmasq.d/hsfq_script.sh
-	cp -f /etc/resolv.conf /etc/storage/dnsmasq.d/resolv_bak
-fi
+ad_home="/etc/storage/adb"
+tmpdir="/tmp/ad"
+adbyby_data="/etc/storage/adb/data"
+logger_title="[Adbyby]"
 
-if [ -d "/etc/storage/dnsmasq.d" ]; then
-	echo -e "\e[1;33m 创建更新脚本 \e[0m\n"
-	wget --no-check-certificate -t 30 -T 60 https://raw.githubusercontent.com/896660689/Hsfq/master/tmp_up -qO /tmp/tmp_hsfq_update.sh
-	mv -f /tmp/tmp_hsfq_update.sh /etc/storage/dnsmasq.d/hsfq_update.sh && sleep 3
-	chmod 755 /etc/storage/dnsmasq.d/hsfq_update.sh
-fi
+restart_ad(){
+	$ad_home/bin/restart_adbyby
+}
 
+rm_cache(){
+	rm -rf $tmpdir
+	rm -f $ad_home/bin/data/*.bak
+}
 
-if [ -f $adbyby_plus ]
-	then
-		sh $adbyby_plus
+judge_update(){
+	if [ "$lazy_online"x == "$lazy_local"x ]; then
+		logger -t "${logger_title}" "本地lazy规则已经最新，无需更新"
+		if [ "$video_online"x == "$video_local"x ]; then
+			logger -t "${logger_title}" "本地video规则已经最新，无需更新"
+			rm_cache && exit 0
+		else
+			logger -t "${logger_title}" "检测到video规则更新，下载规则中..."
+			download_video;restart_ad
+			rm_cache && exit 0
+		fi
 	else
-  	wget --no-check-certificate https://raw.githubusercontent.com/896660689/LS-SSR/master/post_wan_script.sh -O \
-  	  	/etc/storage/adb/post_wan_script.sh
-  	wget --no-check-certificate https://raw.githubusercontent.com/896660689/LS-SSR/master/adupdate.sh -O \
-  	  	$adbyby_plus && chmod 777 $adbyby_plus && sh $adbyby_plus
-	wget --no-check-certificate https://raw.githubusercontent.com/adbyby/xwhyc-rules/master/lazy.txt -O \
-  	  	/etc/storage/adb/data/lazy.txt && chmod 644 /etc/storage/adb/data/lazy.txt
-	wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt -O \
-  	  	/etc/storage/adb/data/video.txt && chmod 644 /etc/storage/adb/data/video.txt
-fi
+		logger -t "${logger_title}" "检测到lazy规则更新，下载规则中..."
+		if [ "$video_online"x == "$video_local"x ]; then
+			logger -t "${logger_title}" "本地video规则已经最新，无需更新"
+			download_lazy;restart_ad
+			rm_cache && exit 0
+		else
+			logger -t "${logger_title}" "检测到video规则更新，下载规则中..."
+			download_lazy;download_video;restart_ad
+			rm_cache && exit 0
+		fi
+	fi
+}
 
-grep "adupdate" /etc/storage/post_wan_script.sh
-if [ ! "$?" -eq "0" ]
-then
-	cp -f /etc/storage/adb/post_wan_script.sh /etc/storage/post_wan_script.sh
-fi
+download_lazy(){
 
-grep -q "adupdate" "/etc/storage/cron/crontabs/$username"
-if [ ! "$?" -eq "0" ]
-then
-	sed -i '/adupdate/d' /etc/storage/cron/crontabs/$username
-	echo -e "\e[1;33m 添加定时计划更新任务 \e[0m\n"
-	sed -i '$a 0 6 * * *    /etc/storage/adb/adupdate.sh &' /etc/storage/cron/crontabs/$username
-	sleep 2 && killall crond;/usr/sbin/crond
-fi
+	wget -q -c -P $tmpdir 'https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt'
+		if [ "$?"x != "0"x ]; then
+			logger -t "${logger_title}" "【lazy】下载coding中的规则失败，尝试下载github中的规则"
+			wget -q -c -P $tmpdir 'https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt'
+			if [ "$?"x != "0"x ]; then
+				logger -t "${logger_title}" "【lazy】双双失败GG，请检查网络"
+			else
+				logger -t "${logger_title}" "【lazy】下载成功，正在应用..."
+				mv $tmpdir/lazy.txt $ad_home/bin/data/lazy.txt
+			fi
+		else
+			logger -t "${logger_title}" "【lazy】下载成功，正在应用..."
+			mv $tmpdir/lazy.txt $ad_home/bin/data/lazy.txt
+		fi
+}
+
+download_video(){
+	wget -q -c -P $tmpdir 'https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt'
+		if [ "$?"x != "0"x ]; then
+			logger -t "${logger_title}" "【video】下载coding中的规则失败，尝试下载github中的规则"
+			wget -q -c -P $tmpdir 'https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt'
+			if [ "$?"x != "0"x ]; then
+				logger -t "${logger_title}" "【video】双双失败GG，请检查网络"
+			else
+				logger -t "${logger_title}" "【video】下载成功，正在应用..."
+				mv $tmpdir/video.txt $ad_home/bin/data/video.txt
+			fi
+		else
+			logger -t "${logger_title}" "【video】下载成功，正在应用..."
+			mv $tmpdir/video.txt $adbyby_data/video.txt
+		fi
+}
+
+# check_rules()
+
+	rm_cache
+	mkdir $tmpdir
+	logger -t "${logger_title}" "自动检测规则更新中" && cd $tmpdir
+		if [ ! -f $tmpdir/lazy.txt ]; then
+		wget --no-check-certificate https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt -O $tmpdir/lazy.txt;chmod 775 $tmpdir/lazy.txt
+		cat $tmpdir/lazy.txt $adbyby_data/lazy.txt | awk '{ print$0}' | sort | uniq -u > $tmpdir/lazy_1.txt && sleep 2
+		if [ ! -s "/tmp/hsfq_script_up.txt" ]; then
+			echo -e "\e[1;33m lazy 规则已为最新,无需更新.\e[0m\n" && rm -f $tmpdir/lazy.txt && rm -f $tmpdir/lazy_1.txt
+		else
+			rm -f $adbyby_data/lazy.txt
+			cp -f $tmpdir/lazy.txt $adbyby_data/lazy.txt
+			mv -f $tmpdir/lazy.txt $adbyby_data/lazy.txt && rm -f $tmpdir/lazy_1.txt
+			echo -e "\033[41;37m lazy 规则更新完成\033[0m\n" && sleep 3
+		fi
+	fi
+/*
+	logger -t "${logger_title}" "自动检测规则更新中" && cd $tmpdir
+		if [ ! -f $tmpdir/video.txt ]; then
+		wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt -O $tmpdir/video.txt;chmod 775 $tmpdir/video.txt
+		cat $tmpdir/video.txt $adbyby_data/video.txt | awk '{ print$0}' | sort | uniq -u > $tmpdir/lazy_1.txt && sleep 2
+		if [ ! -s "/tmp/hsfq_script_up.txt" ]; then
+			echo -e "\e[1;33m video 规则已为最新,无需更新.\e[0m\n" && rm -f $tmpdir/video.txt && rm -f $adbyby_data/video_1.txt
+		else
+			rm -f $adbyby_data/video.txt
+			cp -f $tmpdir/video.txt $adbyby_data/video.txt
+			mv -f $tmpdir/video.txt $adbyby_data/video.txt && rm -f $adbyby_data/video_1.txt
+			echo -e "\033[41;37m video 规则更新完成\033[0m\n" && sleep 3
+		fi
+	fi
+*/
+	logger -t "${logger_title}" "自动检测 video 规则更新中" && cd $tmpdir
+	md5sum $ad_home/bin/data/lazy.txt $ad_home/bin/data/video.txt > local-md5.json
+	wget -q -c -P $tmpdir 'https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/md5.json'
+		if [ "$?"x != "0"x ]; then
+			logger -t "${logger_title}" "获取在线规则时间失败" && exit 0       
+		else
+			## lazy_local=$(grep 'lazy' local-md5.json | awk -F' ' '{print $1}')
+			video_local=$(grep 'video' local-md5.json | awk -F' ' '{print $1}')  
+			## lazy_online=$(sed  's/":"/\n/g' md5.json  |  sed  's/","/\n/g' | sed -n '2p')
+			video_online=$(sed  's/":"/\n/g' md5.json  |  sed  's/","/\n/g' | sed -n '4p')
+			logger -t "${logger_title}"  "获取在线规则MD5成功，正在判断是否有更新中"
+			sed -i "s/=video/=none/g" $ad_home/bin/adhook.ini
+			## sed -i "s/=video,lazy/=none/g" $ad_home/bin/adhook.sample.ini
+			judge_update
+		fi
+	exit 0
