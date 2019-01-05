@@ -1,6 +1,8 @@
 #!/bin/sh
 ## Adaptation Grassland in Lucheng 2019.01.05
 username=`nvram get http_username`
+Firewall_rules="/etc/storage/post_iptables_script.sh"
+Run_script="/etc/storage/post_wan_script.sh"
 ad_home="/etc/storage/adb"
 
 if [ -f "$ad_home/bin/adbyby" ]; then
@@ -26,16 +28,28 @@ EOF
 		fi
 
 	fi
-	if [ -f "/etc/storage/post_iptables_script.sh" ]; then
-		grep "8118" "/etc/storage/post_iptables_script.sh"
+	if [ -f "$Firewall_rules" ]; then
+		grep "8118" $Firewall_rules
 		if [ $? -eq 0 ]; then
-			sed -i '/8118/d' "/etc/storage/post_iptables_script.sh"
+			sed -i '/8118/d' $Firewall_rules
 		else
 			echo -e "\e[1;31m  添加防火墙端口规则 \e[0m"
-			cat >> "/etc/storage/post_iptables_script.sh" << EOF
+			cat >> $Firewall_rules << EOF
 iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 EOF
-			logger -t "adbyby" "adbyby进程守护已启动。"
+			logger -t "adbyby" "adbyby 进程守护已启动..."
+		fi
+
+	fi
+	if [ -f "$Run_script" ]; then
+		grep "adbyby" $Run_script
+		if [ $? -eq 0 ]; then
+			sed -i '/adbyby/d' $Run_script
+		else
+			echo -e "\e[1;31m  添加开机启动脚本 \e[0m"
+			cat >> $Run_script << EOF
+/usr/bin/adbyby.sh&
+EOF
 		fi
 
 	fi
