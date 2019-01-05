@@ -1,1 +1,43 @@
-ad
+#!/bin/sh
+# Compile:by-lanse	2019-01-05
+http_username=`nvram get http_username`
+ad_home="/etc/storage/adb"
+Firewall_rules="/etc/storage/post_iptables_script.sh"
+Run_script="/etc/storage/post_wan_script.sh"
+
+if [ -d "$ad_home" ]; then
+	if [ -n "`pidof adbyby`" ] ; then
+		kill -9 "`pidof adbyby`"
+	fi
+  sleep 3
+	if [ -f "$ad_home/bin/adbyby" ]; then
+		port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
+		logger -t "adbyby" "找到$port个8118透明代理端口，正在关闭。"
+		while [[ "$port" -ge 1 ]]
+		do
+			iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+			port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
+		done
+		echo -e "\e[1;31m 关闭 adbyby 进程，代理端口任务 \e[0m"
+	fi
+	grep -q "ad_up" /etc/storage/cron/crontabs/$username
+	if [ "$?" -eq "0" ]
+	then
+		sed -i '/ad_up/d' /etc/storage/cron/crontabs/$username
+	fi
+  grep "8118" $Firewall_rules
+	if [ "$?" -eq "0" ]
+	then
+		sed -i '/8118/d' $Firewall_rules
+	fi
+	grep "adbyby" $Run_script
+	if [ $? -eq 0 ]
+  then
+  sed -i '/adbyby/d' $Run_script
+  fi
+ 	echo "adbyby 卸载完成" && logger -t "【adbyby】" "adbyby 已卸载..."
+else
+	echo "adbyby 没有v发现安装程序"
+	logger -t "【adbyby】" "adbyby 没有v发现安装程序..."
+fi
+restart_dhcpd
