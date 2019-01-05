@@ -1,40 +1,60 @@
 #!/bin/sh
-# Compile:by-lanse	2019-01-05
+## Adaptation Grassland in Lucheng 2019.01.05
 
 ad_home="/tmp/adb"
-wget_ok=1
-
-if [ ! -f "/tmp/tmp_ad_up" ];then
-	touch /tmp/adbyby.mem
-	wget_ok="0"
-	while [ "$wget_ok" = "0" ] 
-	do 
-		wget-ssl --spider --quiet --tries=1 --timeout=3 www.baidu.com
-		if [ "$?" == "0" ]; then
-			wget_ok="1"
-			touch /tmp/lazy.txt && wget-ssl --no-check-certificate -t 1 -T 10 -O /tmp/lazy.txt https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/lazy.txt
-			touch /tmp/video.txt && wget-ssl --no-check-certificate -t 1 -T 10 -O /tmp/video.txt https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt     
-
-			touch /tmp/local-md5.json && md5sum /tmp/lazy.txt /tmp/video.txt > /tmp/local-md5.json
-			touch /tmp/md5.json && wget-ssl --no-check-certificate -t 1 -T 10 -O /tmp/md5.json https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/md5.json
-      
-			lazy_local=$(grep 'lazy' /tmp/local-md5.json | awk -F' ' '{print $1}')
-			video_local=$(grep 'video' /tmp/local-md5.json | awk -F' ' '{print $1}')  
-			lazy_online=$(sed  's/":"/\n/g' /tmp/md5.json  |  sed  's/","/\n/g' | sed -n '2p')
-			video_online=$(sed  's/":"/\n/g' /tmp/md5.json  |  sed  's/","/\n/g' | sed -n '4p')
-      
-			if [ "$lazy_online"x == "$lazy_local"x -a "$video_online"x == "$video_local"x ]; then
-				echo "adbyby rules MD5 OK!"
-				mv /tmp/lazy.txt $ad_home/bin/data/lazy.txt
-				mv /tmp/video.txt $ad_home/bin/data/video.txt
-				echo $(date +%F) > /tmp/tmp_ad_up
-				logger "adbyby mem mode rules updated!"
-			fi    
-		else
-			sleep 10
+if [ ! -f /tmp/cron_adb.lock ]; then
+	CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
+	if [ $((CPULoad)) -ge "2" ] ; then
+		logger -t "adbyby" "CPU 负载拥堵,关闭广告屏蔽程序。"
+		if [ "$adchange" -eq 1 ]; then
+			touch /tmp/cron_adb.lock
+			port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
+			logger -t "adbyby" "找到$port个8118透明代理端口,正在关闭。"
+			while [[ "$port" -ge 1 ]]
+			do
+				iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+				port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
+			done
+			logger -t "adbyby" "已关闭全部8118透明代理端口。"
+			killall adbyby
+			sed -i '/adbyby/d' /etc/storage/post_wan_script.sh
+			logger -t "adbyby" "adbyby 进程已成功关闭。"
 		fi
+		processor=`cat /proc/cpuinfo| grep "processor"| wc -l`
+		processor=`expr $processor \* 2`
+		while [[ "$CPULoad" -gt "$processor" ]] 
+		do
+			sleep 62
+			CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
+		done
+		logger -t "adbyby" "CPU 负载正常"
+		rm -f /tmp/cron_adb.lock
+	fi
+fi
+if [ "$adchange" -eq 1 ]; then
+	PIDS=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" |wc -l)
+	if [ $PIDS -eq 0 ]; then
+		[ -f $ad_home/bin/adbyby ] && $ad_home/bin/adbyby&
+		echo "注意：TMP：adbyby 意外关闭,将重启adbyby!"
+		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+		exit 0
+	fi
+	if [ $PIDS -gt 6 ]; then
+		echo "注意：发现 adbyby 多于6个进程,将重启adbyby!"
+		ps |grep "$ad_home/bin/adbyby" | grep -v 'grep' | awk '{print $1}' |xargs kill -9
+		$ad_home/bin/adbyby&
+		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+		exit 0
+	fi
+	port=$(iptables -t nat -L | grep "tcp dpt:www redir ports 8118" | wc -l)
+	if [ $port -eq 0 ]; then
+		echo "注意：防火墙转发规则丢失,将添加规则！"
+		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+	fi
+	while [ $port -gt 1 ]
+	do
+		echo "注意：发现多条防火墙转发规则,将删除多余规则！"
+		iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+		port=$(iptables -t nat -L | grep "tcp dpt:www redir ports 8118" | wc -l)
 	done
 fi
-rm -f /tmp/adbyby.mem /tmp/lazy.txt /tmp/video.txt /tmp/local-md5.json /tmp/md5.json
-rm -f $ad_home/bin/data/*.bak
-sleep 10 && $ad_home/bin/adbyby restart
