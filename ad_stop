@@ -39,3 +39,4 @@ if [ -d "$ad_home" ]; then
 else
 	echo "adbyby 没有v发现安装程序" && logger -t "【adbyby】" "adbyby 没有v发现安装程序..."
 fi
+exit 0
