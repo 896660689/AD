@@ -33,24 +33,24 @@ if [ "$Function_options" == "1" ]; then
 fi
 
 if [ "$Function_options" == "2" ]; then
-	if [ ! -f /etc/storage/adb/ad_up ]; then
+	if [ ! -f /tmp/adb/ad_up ]; then
 		echo -e "\e[1;34m 没有发现 Ad_up,开始下载更新文件 \e[0m\n" && sleep 3
 		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_up -O /tmp/ad_up && sleep 2
 		sh /tmp/ad_up
 	else
-		sh /etc/storage/adb/ad_up
+		sh /tmp/adb/ad_up
 		echo -e "\e[1;34m 更新已完成,返回主菜单 \e[0m\n" && sleep 3
 	fi
 	[ -f /tmp/ad_up ] && rm -f /tmp/ad_up; sleep 3 && sh /tmp/Ad_Install
 fi
 
 if [ "$Function_options" == "3" ]; then
-	if [ ! -f /etc/storage/adb/ad_stop ]; then
+	if [ ! -f /tmp/adb/ad_stop ]; then
 		echo -e "\e[1;34m 没有发现卸载文件,开始下载 \e[0m\n" && sleep 3
 		wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/ad_stop -O /tmp/tmp_ad_stop && sleep 2
 		chmod 777 /tmp/tmp_ad_stop; sh /tmp/tmp_ad_stop
 	else
-		chmod 777 /etc/storage/adb/ad_stop; sh /etc/storage/adb/ad_stop
+		chmod 777 /tmp/adb/ad_stop; sh /tmp/adb/ad_stop
 		echo -e "\e[1;34m 卸载已完成,返回主菜单 \e[0m\n" && sleep 3
 	fi
 	[ -f /tmp/tmp_ad_stop ] && rm -f /tmp/tmp_ad_stop; sleep 3 && sh /tmp/Ad_Install
