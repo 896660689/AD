@@ -48,12 +48,12 @@ if [ "$Function_options" == "3" ]; then
 	if [ ! -f "/tmp/ad_stop" ]; then
 		echo -e "\e[1;34m 没有发现卸载文件,开始下载 \e[0m\n" && sleep 3
 		wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/ad_stop -O /tmp/ad_stop && sleep 2
-		chmod 777 /tmp/ad_stop;sh /tmp/ad_stop
+		chmod 777 /tmp/tmp_ad_stop;sh /tmp/tmp_ad_stop
 	else
-		chmod 777 /etc/storage/adb;sh /etc/storage/adb
+		chmod 777 /etc/storage/adb/ad_stop;sh /etc/storage/adb/ad_stop
 		echo -e "\e[1;34m 卸载已完成,返回主菜单 \e[0m\n" && sleep 3
 	fi
-	[ -f /tmp/ad_stop ] && rm -f /tmp/ad_stop;sleep 3 && sh /tmp/Ad_Install
+	[ -f /tmp/tmp_ad_stop ] && rm -f /tmp/tmp_ad_stop;sleep 3 && sh /tmp/Ad_Install
 fi
 
 if [ "$Function_options" == "0" ]; then
