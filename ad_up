@@ -49,7 +49,7 @@ download_lazy(){
 				logger -t "${logger_title}" "【lazy】双双失败GG，请检查网络"
 			else
 				logger -t "${logger_title}" "【lazy】下载成功，正在应用..."
-				sed -i '/youku.com/d' $tmpdir/lazy.txt
+				sed -i '/youku.com/d /google.com/d' $tmpdir/lazy.txt
 				mv $tmpdir/lazy.txt $ad_home/bin/data/lazy.txt
 			fi
 		else
