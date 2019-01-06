@@ -24,20 +24,8 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 		if [ $? -eq 0 ]; then
 			echo "YES"
 		else
-			sed -i '$a 5 * * * * /bin/sh /tmp/adb/ad_gz >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
+			sed -i '$a 5 * * * * /bin/sh /tmp/adb/ad_up >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
 		fi
-	fi
-	if [ -f "$Firewall_rules" ]; then
-		grep "8118" $Firewall_rules
-		if [ $? -eq 0 ]; then
-			#sed -i '/8118/d' $Firewall_rules
-			echo "YES"
-		else
-			echo -e "\e[1;31m  添加防火墙端口规则 \e[0m"
-			sed -i '$a iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118' $Firewall_rules
-			restart_dhcpd && logger -t "adbyby" "adbyby 进程守护已启动..."
-		fi
-
 	fi
 	if [ -f "$Run_script" ]; then
 		grep "adbyby" $Run_script
@@ -45,7 +33,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 			echo "YES"
 		else
 			echo -e "\e[1;31m  添加开机启动脚本 \e[0m"
-			sed -i '$a /usr/bin/adbyby.sh&' $Run_script
+			sed -i '$a /tmp/adb/bin/adbyby.sh&' $Run_script
 		fi
 
 	fi
