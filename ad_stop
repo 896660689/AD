@@ -65,7 +65,7 @@ else
 	then
 		sed -i '/8118/d' $Firewall_rules
 	fi
-	grep "adbyby" $Run_script
+	grep "tmp" $Run_script
 	if [ $? -eq 0 ]
 	then
 		sed -i '/tmp/d /fi/d /else/d' $Run_script
