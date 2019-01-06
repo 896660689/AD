@@ -30,9 +30,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 			echo "YES"
 		else
 			echo -e "\e[1;31m  添加防火墙端口规则 \e[0m"
-			cat >> $Firewall_rules << EOF
-iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
-EOF
+			sed -i '$a iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118' $Firewall_rules
 			restart_dhcpd && logger -t "adbyby" "adbyby 进程守护已启动..."
 		fi
 
@@ -43,9 +41,7 @@ EOF
 			echo "YES"
 		else
 			echo -e "\e[1;31m  添加开机启动脚本 \e[0m"
-			cat >> $Run_script << EOF
-/usr/bin/adbyby.sh&
-EOF
+			sed -i '$a /usr/bin/adbyby.sh&' $Run_script
 		fi
 
 	fi
