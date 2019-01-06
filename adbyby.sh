@@ -24,7 +24,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 		if [ $? -eq 0 ]; then
 			echo "YES"
 		else
-			sed -i '$a 5 * * * * /bin/sh /tmp/adb/adbchk.sh >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
+			sed -i '$a 30 5 * * * /bin/sh /tmp/adb/adbchk.sh >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
 		fi
 	fi
 	if [ -f "$Run_script" ]; then
