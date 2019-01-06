@@ -19,19 +19,15 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	if [ -f "/etc/storage/cron/crontabs/$username" ]; then
 		grep "ad_up" /etc/storage/cron/crontabs/$username
 		if [ $? -eq 0 ]; then
-			sed -i '/ad_gz/d' /etc/storage/cron/crontabs/$http_username
+			echo "YES"
 		else
-			echo -e "\e[1;31m 添加定时计划更新任务 \e[0m"
-			cat >> /etc/storage/cron/crontabs/$http_username << EOF
-5 * * * * /bin/sh /tmp/adb/ad_gz >/dev/null 2>&1
-EOF
-		fi
-
+			sed -i '$a 5 * * * * /bin/sh /tmp/adb/ad_gz >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
 	fi
 	if [ -f "$Firewall_rules" ]; then
 		grep "8118" $Firewall_rules
 		if [ $? -eq 0 ]; then
-			sed -i '/8118/d' $Firewall_rules
+			#sed -i '/8118/d' $Firewall_rules
+			echo "YES"
 		else
 			echo -e "\e[1;31m  添加防火墙端口规则 \e[0m"
 			cat >> $Firewall_rules << EOF
@@ -44,7 +40,7 @@ EOF
 	if [ -f "$Run_script" ]; then
 		grep "adbyby" $Run_script
 		if [ $? -eq 0 ]; then
-			sed -i '/adbyby/d' $Run_script
+			echo "YES"
 		else
 			echo -e "\e[1;31m  添加开机启动脚本 \e[0m"
 			cat >> $Run_script << EOF
