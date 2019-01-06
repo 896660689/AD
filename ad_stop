@@ -1,7 +1,7 @@
 #!/bin/sh
 # Compile:by-lanse	2019-01-05
 http_username=`nvram get http_username`
-ad_home="/etc/storage/adb"
+ad_home="/tmp/adb"
 Firewall_rules="/etc/storage/post_iptables_script.sh"
 Run_script="/etc/storage/post_wan_script.sh"
 
@@ -71,5 +71,6 @@ else
 		sed -i '/adbyby/d' $Run_script
 	fi
 	restart_dhcpd
-	[ ! -d "$ad_home" ] && exit 0
+	[ -d "$ad_home" ] rm -f "$ad_home" && sleep 3
 fi
+[ ! -d "$ad_home" ] && exit 0
