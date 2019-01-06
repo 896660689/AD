@@ -15,6 +15,7 @@ if [ ! -f "$ad_home/bin/adbyby" ]; then
 	logger -t "adbyby" "adbyby 程序文件不存在,准备下载..."
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/7620n.tar.gz -O /tmp/7620n.tar.gz && sleep 2
 	sleep 2 && tar -xzf "/tmp/7620n.tar.gz" -C $ad_home
+	mv -f /tmp/7620n.tar.gz /etc/storage/adb/7620n.tar.gz
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbyby.sh -O /tmp/tmp_adbyby
 	sleep 2 && mv -f /tmp/tmp_adbyby $ad_home/adbyby.sh && chmod 777 /tmp/adb/adbyby.sh
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbchk.sh -O /tmp/tmp_ad_up
@@ -38,7 +39,6 @@ else
 	sleep 3 && sh /tmp/adb/adbyby.sh
 	echo -e "\e[1;34m 开始运行 adbyby 启动文件 \e[0m\n" && sleep 3
 fi
-mv -f /tmp/7620n.tar.gz /etc/storage/adb/7620n.tar.gz
 sleep 3 && [ -f /tmp/tmp_ad_stop ] && rm -f /tmp/tmp_ad_stop;[ -f /tmp/tmp_ad_up ] && rm -f /tmp/tmp_ad_up;[ -f /tmp/tmp_ad_whost ] && rm -f /tmp/tmp_ad_whost
 [ -f /tmp/tmp_ad_an ] && rm -f /tmp/tmp_ad_an;[ -f /tmp/adbyby.sh ] && rm -f /tmp/tmp_adbyby.sh
 sleep 3 && exit 0
