@@ -24,7 +24,6 @@ if [ ! -f /tmp/cron_adb.lock ]; then
 			CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
 		done
 		logger -t "adbyby" "CPU 负载正常"
-		rm -f /tmp/cron_adb.lock
 	fi
 fi
 
