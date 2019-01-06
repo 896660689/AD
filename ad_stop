@@ -9,6 +9,9 @@ if [ -d "$ad_home" ]; then
 	if [ -n "`pidof adbyby`" ] ; then
 		kill -9 "`pidof adbyby`"
 	fi
+	while [ -n "`pidof ad_gz`" ] ; do
+		kill -9 "`pidof ad_gz`"
+	done
 	sleep 3
 	if [ -f "$ad_home/bin/adbyby" ]; then
 		port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
