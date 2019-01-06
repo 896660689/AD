@@ -25,6 +25,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 			echo "YES"
 		else
 			sed -i '$a 5 * * * * /bin/sh /tmp/adb/ad_gz >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
+		fi
 	fi
 	if [ -f "$Firewall_rules" ]; then
 		grep "8118" $Firewall_rules
