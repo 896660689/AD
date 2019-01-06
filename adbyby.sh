@@ -34,8 +34,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 		else
 			echo -e "\e[1;31m  添加开机启动脚本 \e[0m"
 			cat >> /etc/storage/post_wan_script.sh << EOF
-if [ -f /tmp/adb/adbyby.sh ]
-then
+if [ -f /tmp/adb/adbyby.sh ]; then
 	/tmp/adb/adbyby.sh&
 else
 	tar -xzf /etc/storage/adb/7620n.tar.gz -C /tmp/adb
