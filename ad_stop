@@ -23,7 +23,7 @@ if [ -d "$ad_home" ]; then
 		done
 		echo -e "\e[1;31m 关闭 adbyby 进程，代理端口任务 \e[0m"
 	fi
-	grep -q "ad_up" /etc/storage/cron/crontabs/$username
+	grep -q "adbchk.sh" /etc/storage/cron/crontabs/$username
 	if [ "$?" -eq "0" ]
 	then
 		sed -i '/ad_gz/d' /etc/storage/cron/crontabs/$username
