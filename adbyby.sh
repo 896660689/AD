@@ -42,8 +42,6 @@ else
 	/tmp/adb/adbyby.sh&
 fi
 EOF
-			sed -i '$a /tmp/adb/adbyby.sh&' $Run_script
-			sed -i '$a /tmp/adb/adbyby.sh&' $Run_script
 		fi
 
 	fi
