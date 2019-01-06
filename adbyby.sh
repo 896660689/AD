@@ -69,7 +69,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	[ -f /tmp/Ad_Install ] && rm -f /tmp/Ad_Install
 	[ -f /tmp/ad_an ] && rm -f /tmp/ad_an
 	logger -t "adbyby" "adbyby 开始运行..."
-	chmod 777 "$ad_home/bin/adbyby" && /tmp/adb/bin/adbyby && exit 0
+	chmod 777 "$ad_home/bin/adbyby" && /tmp/adb/bin/adbyby&
 	echo -e "\033[41;37m adbyby 开始运行... \e[0m\n"
 	sleep 5 && mtd_storage.sh save
 	check=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" | wc -l)
