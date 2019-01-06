@@ -35,12 +35,18 @@ if [ -d "$ad_home" ]; then
 		sed -i '/tmp/d /fi/d /else/d' $Run_script
 	fi
 	restart_dhcpd && echo "adbyby 卸载完成" && logger -t "【adbyby】" "adbyby 已卸载完成...。"
-	exit 0
+	[ -f /var/log/ad_gz.log ] && rm -f /var/log/ad_gz.log;[ -f /var/log/adbyby_watchdog.log ] && rm -f /var/log/adbyby_watchdog.log
+	[ -d /etc/storage/adb ] && rm -R /etc/storage/adb; [ -d /tmp/adb ] && rm -R /tmp/adb; sleep 3
+	[ -f /tmp/cron_adb.lock ] && rm -f /tmp/cron_adb.lockexit && exit 0
 else
 	echo "adbyby 没有发现安装程序" && logger -t "【adbyby】" "adbyby 没有v发现安装程序..."
 	if [ -n "`pidof adbyby`" ] ; then
 		kill -9 "`pidof adbyby`"
 	fi
+	while [ -n "`pidof ad_gz`" ] ; do
+		kill -9 "`pidof ad_gz`"
+	done
+	sleep 3
 	if [ -f "$ad_home/bin/adbyby" ]; then
 		port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
 		logger -t "adbyby" "找到$port个8118透明代理端口，正在关闭。"
@@ -62,7 +68,7 @@ else
 		sed -i '/tmp/d /fi/d /else/d' $Run_script
 	fi
 	[ -f /var/log/ad_gz.log ] && rm -f /var/log/ad_gz.log;[ -f /var/log/adbyby_watchdog.log ] && rm -f /var/log/adbyby_watchdog.log
-	[ -d /etc/storage/adb ] && rm -R /etc/storage/adb;[ -d /tmp/adb ] && rm -R /tmp/adb;sleep 3
+	[ -d /etc/storage/adb ] && rm -R /etc/storage/adb; [ -d /tmp/adb ] && rm -R /tmp/adb; sleep 3
 	[ -f /tmp/cron_adb.lock ] && rm -f /tmp/cron_adb.lock
 	restart_dhcpd
 fi
