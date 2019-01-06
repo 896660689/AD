@@ -93,7 +93,7 @@ download_video(){
 		fi
 	fi
 	logger -t "${logger_title}" "自动检测规则更新中" && cd $tmpdir
-		if [ ! -f $tmpdir/video.txt ]; then
+	if [ ! -f $tmpdir/video.txt ]; then
 		wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt -O $tmpdir/video.txt;chmod 775 $tmpdir/video.txt
 		cat $tmpdir/video.txt $ad_home/bin/data/video.txt | awk '{ print$0}' | sort | uniq -u > $tmpdir/lazy_1.txt && sleep 2
 		if [ ! -s "/tmp/hsfq_script_up.txt" ]; then
