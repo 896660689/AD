@@ -20,11 +20,11 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	fi
 	logger -t "adbyby" "adbyby进程已成功关闭。"
 	if [ -f "/etc/storage/cron/crontabs/$username" ]; then
-		grep "ad_up" /etc/storage/cron/crontabs/$username
+		grep "adbchk" /etc/storage/cron/crontabs/$username
 		if [ $? -eq 0 ]; then
 			echo "YES"
 		else
-			sed -i '$a 5 * * * * /bin/sh /tmp/adb/ad_up >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
+			sed -i '$a 5 * * * * /bin/sh /tmp/adb/adbchk.sh >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
 		fi
 	fi
 	if [ -f "$Run_script" ]; then
