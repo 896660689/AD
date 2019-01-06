@@ -39,6 +39,7 @@ then
 	/tmp/adb/adbyby.sh&
 else
 	tar -xzf /etc/storage/adb/7620n.tar.gz -C /tmp/adb
+	tar -xzf /etc/storage/adb/adb.tar.gz -C /tmp
 	/tmp/adb/adbyby.sh&
 fi
 EOF
