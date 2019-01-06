@@ -68,7 +68,7 @@ else
 	grep "adbyby" $Run_script
 	if [ $? -eq 0 ]
 	then
-		sed -i '/adbyby/d /7620n/d /fi/d /else/d' /etc/storage/post_wan_script.sh
+		sed -i '/tmp/d /fi/d /else/d' /etc/storage/post_wan_script.sh
 		$Run_script
 	fi
 	[ -f /var/log/ad_gz.log ] && rm -f /var/log/ad_gz.log;[ -f /var/log/adbyby_watchdog.log ] && rm -f /var/log/adbyby_watchdog.log
