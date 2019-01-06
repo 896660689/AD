@@ -1,4 +1,5 @@
 #!/bin/sh
+## Adaptation Grassland in Lucheng 2019.01.06
 
 if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 	touch /tmp/adbyby.mem
@@ -22,7 +23,7 @@ if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 		logger "adbyby mem mode rules updated!"
 	fi
 	rm -f /tmp/adbyby.mem /tmp/lazy.txt /tmp/video.txt /tmp/local-md5.json /tmp/md5.json
-	rm -f /tmp/adb/data/bin/*.bak
+	rm -f /tmp/adb/bin/data/*.bak
 	sleep 5
 fi
 [ -f "/tmp/adbyby.mem" ] && rm -f /tmp/adbyby.mem
