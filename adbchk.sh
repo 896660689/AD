@@ -25,4 +25,4 @@ if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 	rm -f /tmp/adb/data/*.bak
 	sleep 5
 fi
-[ -f "/tmp/adbyby.mem" ] rm -f /tmp/adbyby.mem
+[ -f "/tmp/adbyby.mem" ] && rm -f /tmp/adbyby.mem
