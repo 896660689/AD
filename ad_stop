@@ -71,6 +71,7 @@ else
 		sed -i '/adbyby/d' $Run_script
 	fi
 	[ -f /var/log/ad_gz.log ] && rm -f /var/log/ad_gz.log;[ -f /var/log/adbyby_watchdog.log ] && rm -f /var/log/adbyby_watchdog.log
+	[ -f /etc/storage/adb ] && rm -rf /etc/storage/adb
 	restart_dhcpd
 	[ -d "$ad_home" ]  && rm -rf "$ad_home" && sleep 3
 fi
