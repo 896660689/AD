@@ -8,5 +8,5 @@
 
 if [ $1 == "up" ] ; then
     sleep 30
-    /etc/storage/adb/adupdate.sh &
+    /tmp/adb/adbyby.sh &
 fi
