@@ -14,6 +14,7 @@ sleep 60
 		CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
 		if [ $((CPULoad)) -ge "2" ] ; then
 			logger -t "adbyby" "CPU 负载拥堵,关闭广告屏蔽程序。"
+			touch /tmp/cron_adb.lock
 			port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
 			logger -t "adbyby" "找到$port个8118透明代理端口,正在关闭。"
 			while [[ "$port" -ge 1 ]]
@@ -23,7 +24,7 @@ sleep 60
 			done
 			logger -t "adbyby" "已关闭全部8118透明代理端口。"
 			killall adbyby
-			sed -i '/adbyby/d' /etc/storage/post_wan_script.sh
+			sed -i '/tmp/d /else/d /fi/d' /etc/storage/post_wan_script.sh
 			logger -t "adbyby" "adbyby 进程已成功关闭。"
 			processor=`cat /proc/cpuinfo| grep "processor"| wc -l`
 			processor=`expr $processor \* 2`
@@ -57,5 +58,6 @@ sleep 60
 	do
 		echo "注意：发现多条防火墙转发规则,将删除多余规则！"
 		iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+		port=$(iptables -t nat -L | grep "tcp dpt:www redir ports 8118" | wc -l)
 	done
 done
