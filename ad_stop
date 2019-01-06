@@ -23,20 +23,16 @@ if [ -d "$ad_home" ]; then
 		done
 		echo -e "\e[1;31m 关闭 adbyby 进程，代理端口任务 \e[0m"
 	fi
-	grep -q "adbchk.sh" /etc/storage/cron/crontabs/$username
+	grep -q "adbchk" /etc/storage/cron/crontabs/$username
 	if [ "$?" -eq "0" ]
 	then
-		sed -i '/ad_gz/d' /etc/storage/cron/crontabs/$username
+		sed -i '/adbchk/d' /etc/storage/cron/crontabs/$username
 	fi
-	grep "8118" $Firewall_rules
-	if [ "$?" -eq "0" ]
-	then
-		sed -i '/8118/d' $Firewall_rules
-	fi
-	grep "adbyby" $Run_script
+	
+	grep "tmp" $Run_script
 	if [ $? -eq 0 ]
 	then
-		sed -i '/adbyby/d' $Run_script
+		sed -i '/tmp/d /fi/d /else/d' $Run_script
 	fi
 	restart_dhcpd && echo "adbyby 卸载完成" && logger -t "【adbyby】" "adbyby 已卸载完成...。"
 	exit 0
@@ -55,15 +51,10 @@ else
 		done
 		echo -e "\e[1;31m 关闭 adbyby 进程，代理端口任务 \e[0m"
 	fi
-	grep -q "ad_up" /etc/storage/cron/crontabs/$username
+	grep -q "adbchk" /etc/storage/cron/crontabs/$username
 	if [ "$?" -eq "0" ]
 	then
-		sed -i '/ad_gz/d' /etc/storage/cron/crontabs/$username
-	fi
-	grep "8118" $Firewall_rules
-	if [ "$?" -eq "0" ]
-	then
-		sed -i '/8118/d' $Firewall_rules
+		sed -i '/adbchk/d' /etc/storage/cron/crontabs/$username
 	fi
 	grep "tmp" $Run_script
 	if [ $? -eq 0 ]
