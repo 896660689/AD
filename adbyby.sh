@@ -1,5 +1,6 @@
 #!/bin/sh
-## Adaptation Grassland in Lucheng 2019.01.05
+## Adaptation Grassland in Lucheng 2019.01.06
+
 username=`nvram get http_username`
 Firewall_rules="/etc/storage/post_iptables_script.sh"
 Run_script="/etc/storage/post_wan_script.sh"
