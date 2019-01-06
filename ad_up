@@ -105,4 +105,4 @@ download_video(){
 			echo -e "\033[41;37m video 规则更新完成\033[0m\n" && sleep 3
 		fi
 	fi
-exit 0
+	[ -d /tmp/an ] && rm -f /tmp/an; exit 0
