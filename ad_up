@@ -18,8 +18,6 @@ if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 		mv -f /tmp/video.txt /tmp/adb/bin/data/video.txt
 		echo $(date +%F) > /tmp/adb/bin/adbybyupdate.sh
 		logger "adbyby mem mode rules updated!"
-	else
-		mv -f /tmp/lazy.txt /tmp/adb/bin/data/lazy.txt
 	fi
 	rm -f /tmp/adbyby.mem /tmp/lazy.txt /tmp/video.txt /tmp/local-md5.json /tmp/md5.json
 	rm -f /tmp/adb/data/*.bak
