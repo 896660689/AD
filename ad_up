@@ -1,108 +1,28 @@
 #!/bin/sh
-# Compile:by-lanse	2019-01-05
 
-ad_home="/tmp/adb"
-tmpdir="/tmp/ad"
-logger_title="[Adbyby]"
-
-restart_ad(){
-	$ad_home/bin/restart_adbyby
-}
-
-rm_cache(){
-	rm -rf $tmpdir
-	rm -f $ad_home/bin/data/*.bak
-}
-
-judge_update(){
-	if [ "$lazy_online"x == "$lazy_local"x ]; then
-		logger -t "${logger_title}" "本地lazy规则已经最新，无需更新"
-		if [ "$video_online"x == "$video_local"x ]; then
-			logger -t "${logger_title}" "本地video规则已经最新，无需更新"
-			rm_cache && exit 0
-		else
-			logger -t "${logger_title}" "检测到video规则更新，下载规则中..."
-			download_video;restart_ad
-			rm_cache && exit 0
-		fi
+if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
+	touch /tmp/adbyby.mem
+	wget -s -q -T 3 www.baidu.com
+	touch /tmp/lazy.txt && wget --no-check-certificate http://git.oschina.net/halflife/list/raw/master/ad.txt -O /tmp/lazy.txt
+	touch /tmp/video.txt && wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt -O /tmp/video.txt
+	touch /tmp/local-md5.json && md5sum /tmp/lazy.txt /tmp/video.txt > /tmp/local-md5.json
+	touch /tmp/md5.json && wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/md5.json -O /tmp/md5.json
+	lazy_local=$(grep 'lazy' /tmp/local-md5.json | awk -F' ' '{print $1}')
+	video_local=$(grep 'video' /tmp/local-md5.json | awk -F' ' '{print $1}')  
+	lazy_online=$(sed  's/":"/\n/g' /tmp/md5.json  |  sed  's/","/\n/g' | sed -n '2p')
+	video_online=$(sed  's/":"/\n/g' /tmp/md5.json  |  sed  's/","/\n/g' | sed -n '4p')
+	chmod -R 644 /tmp/adb/bin/data
+	if [ "$lazy_online"x == "$lazy_local"x -a "$video_online"x == "$video_local"x ]; then
+		echo "adbyby rules MD5 OK!"
+		mv -f /tmp/lazy.txt /tmp/adb/bin/data/lazy.txt
+		mv -f /tmp/video.txt /tmp/adb/bin/data/video.txt
+		echo $(date +%F) > /tmp/adb/bin/adbybyupdate.sh
+		logger "adbyby mem mode rules updated!"
 	else
-		logger -t "${logger_title}" "检测到lazy规则更新，下载规则中..."
-		if [ "$video_online"x == "$video_local"x ]; then
-			logger -t "${logger_title}" "本地video规则已经最新，无需更新"
-			download_lazy;restart_ad
-			rm_cache && exit 0
-		else
-			logger -t "${logger_title}" "检测到video规则更新，下载规则中..."
-			download_lazy;download_video;restart_ad
-			rm_cache && exit 0
-		fi
+		mv -f /tmp/lazy.txt /tmp/adb/bin/data/lazy.txt
 	fi
-}
-
-download_lazy(){
-
-	wget -q -c -P $tmpdir 'https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt'
-		if [ "$?"x != "0"x ]; then
-			logger -t "${logger_title}" "【lazy】下载coding中的规则失败，尝试下载github中的规则"
-			wget -q -c -P $tmpdir 'https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt'
-			if [ "$?"x != "0"x ]; then
-				logger -t "${logger_title}" "【lazy】双双失败GG，请检查网络"
-			else
-				logger -t "${logger_title}" "【lazy】下载成功，正在应用..."
-				sed -i '/youku.com/d /google.com/d' $tmpdir/lazy.txt
-				mv $tmpdir/lazy.txt $ad_home/bin/data/lazy.txt
-			fi
-		else
-			logger -t "${logger_title}" "【lazy】下载成功，正在应用..."
-			mv $tmpdir/lazy.txt $ad_home/bin/data/lazy.txt
-		fi
-}
-
-download_video(){
-	wget -q -c -P $tmpdir 'https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt'
-		if [ "$?"x != "0"x ]; then
-			logger -t "${logger_title}" "【video】下载coding中的规则失败，尝试下载github中的规则"
-			wget -q -c -P $tmpdir 'https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt'
-			if [ "$?"x != "0"x ]; then
-				logger -t "${logger_title}" "【video】双双失败GG，请检查网络"
-			else
-				logger -t "${logger_title}" "【video】下载成功，正在应用..."
-				mv $tmpdir/video.txt $ad_home/bin/data/video.txt
-			fi
-		else
-			logger -t "${logger_title}" "【video】下载成功，正在应用..."
-			mv $tmpdir/video.txt $ad_home/bin/data/video.txt
-		fi
-}
-
-# check_rules()
-
-	rm_cache
-	mkdir $tmpdir
-	logger -t "${logger_title}" "自动检测规则更新中" && cd $tmpdir
-	if [ ! -f $tmpdir/lazy.txt ]; then
-		wget --no-check-certificate https://easylist-downloads.adblockplus.org/easylistchina+easylist.txt -O $tmpdir/lazy.txt;chmod 775 $tmpdir/lazy.txt
-		cat $tmpdir/lazy.txt $ad_home/bin/data/lazy.txt | awk '{ print$0}' | sort | uniq -u > $tmpdir/lazy_1.txt && sleep 2
-		if [ ! -s "/tmp/hsfq_script_up.txt" ]; then
-			echo -e "\e[1;33m lazy 规则已为最新,无需更新.\e[0m\n" && rm -f $tmpdir/lazy.txt && rm -f $tmpdir/lazy_1.txt
-		else
-			rm -f $ad_home/bin/data/lazy.txt
-			cp -f $tmpdir/lazy.txt $ad_home/bin/data/lazy.txt
-			mv -f $tmpdir/lazy.txt $ad_home/bin/data/lazy.txt && rm -f $tmpdir/lazy_1.txt
-			echo -e "\033[41;37m lazy 规则更新完成\033[0m\n" && sleep 3
-		fi
-	fi
-	logger -t "${logger_title}" "自动检测规则更新中" && cd $tmpdir
-	if [ ! -f $tmpdir/video.txt ]; then
-		wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt -O $tmpdir/video.txt;chmod 775 $tmpdir/video.txt
-		cat $tmpdir/video.txt $ad_home/bin/data/video.txt | awk '{ print$0}' | sort | uniq -u > $tmpdir/lazy_1.txt && sleep 2
-		if [ ! -s "/tmp/hsfq_script_up.txt" ]; then
-			echo -e "\e[1;33m video 规则已为最新,无需更新.\e[0m\n" && rm -f $tmpdir/video.txt && rm -f $ad_home/bin/data/video_1.txt
-		else
-			rm -f $ad_home/bin/data/video.txt
-			cp -f $tmpdir/video.txt $ad_home/bin/data/video.txt
-			mv -f $tmpdir/video.txt $ad_home/bin/data/video.txt && rm -f $ad_home/bin/data/video_1.txt
-			echo -e "\033[41;37m video 规则更新完成\033[0m\n" && sleep 3
-		fi
-	fi
-	[ -d /tmp/an ] && rm -f /tmp/an; exit 0
+	rm -f /tmp/adbyby.mem /tmp/lazy.txt /tmp/video.txt /tmp/local-md5.json /tmp/md5.json
+	rm -f /tmp/adb/data/*.bak
+	sleep 5 && /tmp/adb/ad_gz
+fi
+[ -f "/tmp/adbyby.mem" ] rm -f /tmp/adbyby.mem
