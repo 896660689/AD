@@ -60,6 +60,6 @@ if [ "$Function_options" == "0" ]; then
 	echo -e "*****************************************************"
 	echo -e "*                   Time:`date +'%Y-%m-%d'`                    *"
 	echo -e "*****************************************************\n"
-	[ -f /tmp/ad_an ] && rm -f /tmp/ad_an; [ -f /tmp/ad_up ] && rm -f /tmp/ad_up; [ -f /tmp/ad_stop ] && rm -f /tmp/ad_stop
-	[ -f /tmp/7620n.tar.gz ] && rm -f /tmp/7620n.tar.gz; [ -f /tmp/Ad_Install ] && rm -f /tmp/Ad_Install
+	[ -f /tmp/ad_an ] && rm -f /tmp/ad_an;[ -f /tmp/ad_up ] && rm -f /tmp/ad_up;[ -f /tmp/ad_stop ] && rm -f /tmp/ad_stop
+	[ -f /tmp/7620n.tar.gz ] && rm -f /tmp/7620n.tar.gz;[ -f /tmp/Ad_Install ] && rm -f /tmp/Ad_Install
 fi
