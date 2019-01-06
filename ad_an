@@ -25,6 +25,8 @@ if [ ! -f "$ad_home/bin/adbyby" ]; then
 	sleep 2 && mv -f /tmp/tmp_ad_whost $ad_home/ad_whost && chmod 755 $ad_home/ad_whost
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_stop -O /tmp/tmp_ad_stop
 	sleep 2 && mv -f /tmp/tmp_ad_stop $ad_home/ad_stop && chmod 777 $ad_home/ad_stop
+	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adb.tar.gz -O /tmp/adb.tar.gz
+	sleep 2 && mv -f /tmp/adb.tar.gz /etc/storage/adb/adb.tar.gz
 	echo -e "\e[1;34m adbyby 下载完成并成功解压文件 \e[0m\n" && sleep 3; sh "$ad_home/adbyby.sh"
 else
 	if [ -f "$ad_home/adbyby.sh" ]; then
