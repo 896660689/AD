@@ -22,7 +22,7 @@ if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 		logger "adbyby mem mode rules updated!"
 	fi
 	rm -f /tmp/adbyby.mem /tmp/lazy.txt /tmp/video.txt /tmp/local-md5.json /tmp/md5.json
-	rm -f /tmp/adb/data/*.bak
+	rm -f /tmp/adb/data/bin/*.bak
 	sleep 5
 fi
 [ -f "/tmp/adbyby.mem" ] && rm -f /tmp/adbyby.mem
