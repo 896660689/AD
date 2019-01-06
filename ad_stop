@@ -1,6 +1,6 @@
 #!/bin/sh
 # Compile:by-lanse	2019-01-05
-http_username=`nvram get http_username`
+username=`nvram get http_username`
 ad_home="/tmp/adb"
 Firewall_rules="/etc/storage/post_iptables_script.sh"
 Run_script="/etc/storage/post_wan_script.sh"
