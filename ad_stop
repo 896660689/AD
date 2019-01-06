@@ -72,7 +72,7 @@ else
 		$Run_script
 	fi
 	[ -f /var/log/ad_gz.log ] && rm -f /var/log/ad_gz.log;[ -f /var/log/adbyby_watchdog.log ] && rm -f /var/log/adbyby_watchdog.log
-	[ -d /etc/storage/adb ] && rm -rf /etc/storage/adb;[ -d /tmp/adb ] && rm -rf /tmp/adb;sleep 3
+	[ -d /etc/storage/adb ] && rm -R /etc/storage/adb;[ -d /tmp/adb ] && rm -R /tmp/adb;sleep 3
 	restart_dhcpd
 fi
 [ ! -d "$ad_home" ] && exit 0
