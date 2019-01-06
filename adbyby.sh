@@ -33,7 +33,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 			echo "YES"
 		else
 			echo -e "\e[1;31m  添加开机启动脚本 \e[0m"
-			sed -i '$a /tmp/adb/bin/adbyby.sh&' $Run_script
+			sed -i '$a /tmp/adb/adbyby.sh&' $Run_script
 		fi
 
 	fi
