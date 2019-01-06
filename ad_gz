@@ -4,7 +4,6 @@ LOGFILE=/var/log/adbyby_watchdog.log
 ad_home="/tmp/adb"
 
 touch $LOGFILE
-/
 while true; do
 sleep 60
 	LOGSIZE=$(wc -c < $LOGFILE)
