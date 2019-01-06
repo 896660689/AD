@@ -15,7 +15,10 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	done
 	echo -e "\e[1;31m 关闭 adbyby 进程，代理端口任务 \e[0m"
 	touch /tmp/cron_adb.lock
-	killall adbyby && logger -t "adbyby" "adbyby进程已成功关闭。"
+	if [ -n "`pidof adbyby`" ] ; then
+		kill -9 "`pidof adbyby`"
+	fi
+	logger -t "adbyby" "adbyby进程已成功关闭。"
 	if [ -f "/etc/storage/cron/crontabs/$username" ]; then
 		grep "ad_up" /etc/storage/cron/crontabs/$username
 		if [ $? -eq 0 ]; then
