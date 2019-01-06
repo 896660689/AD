@@ -1,5 +1,5 @@
 #!/bin/sh
-# Compile:by-lanse	2019-01-05
+## Adaptation Grassland in Lucheng 2019.01.06
 username=`nvram get http_username`
 ad_home="/tmp/adb"
 Firewall_rules="/etc/storage/post_iptables_script.sh"
