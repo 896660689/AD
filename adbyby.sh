@@ -65,4 +65,5 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 else
 	echo -e "\e[1;31m  没有发现 adbyby 程序，没能启动 \e[0m"	 
 fi
+/tmp/adb/ad_gz >> /var/log/ad_gz.log 2>&1 &
 sleep 5 && /tmp/adb/adbchk.sh
