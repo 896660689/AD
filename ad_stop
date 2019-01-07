@@ -32,7 +32,7 @@ if [ -d "$ad_home" ]; then
 	grep "tmp" $Run_script
 	if [ $? -eq 0 ]
 	then
-		sed -i '/tmp/d /fi/d /else/d' $Run_script
+		sed -i '/tmp/d /adbyby/d /fi/d /else/d' $Run_script
 	fi
 	restart_dhcpd && echo "adbyby 卸载完成" && logger -t "【adbyby】" "adbyby 已卸载完成...。"
 else
@@ -62,7 +62,7 @@ else
 	grep "tmp" $Run_script
 	if [ $? -eq 0 ]
 	then
-		sed -i '/tmp/d /fi/d /else/d' $Run_script
+		sed -i '/tmp/d /adbyby/d /fi/d /else/d' $Run_script
 	fi
 	restart_dhcpd && sleep 3 && echo -e "\e[1;31m adbyby 卸载完成... \e[0m"
 fi
