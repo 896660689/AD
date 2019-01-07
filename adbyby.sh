@@ -67,7 +67,7 @@ EOF
 	logger -t "adbyby" "adbyby 开始运行..."
 	chmod 777 "$ad_home/bin/adbyby" && /tmp/adb/bin/adbyby&
 	echo -e "\033[41;37m adbyby 开始运行... \e[0m\n"
-	sleep 5 && mtd_storage.sh save
+	sleep 5
 	check=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" | wc -l)
 	if [ "$check" = 0 ]; then
 		logger -t "adbyby" "adbyby启动失败。"
