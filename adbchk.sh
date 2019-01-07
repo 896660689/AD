@@ -24,6 +24,6 @@ if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 	fi
 	rm -f /tmp/adbyby.mem /tmp/lazy.txt /tmp/video.txt /tmp/local-md5.json /tmp/md5.json
 	rm -f /tmp/adb/bin/data/*.bak
-	sleep 5
+	sleep 3
 fi
 [ -f "/tmp/adbyby.mem" ] && rm -f /tmp/adbyby.mem
