@@ -28,16 +28,6 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 			sed -i '$a 30 5 * * * /bin/sh /tmp/adb/adbchk.sh >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
 		fi
 	fi
-	if [ -f "$Run_script" ]; then
-		grep "adbyby" $Run_script
-		if [ $? -eq 0 ]; then
-			echo "YES"
-		else
-			echo -e "\e[1;31m  添加开机启动脚本 \e[0m"
-			/tmp/adb/bin/adbyby&
-		fi
-
-	fi
 	export PATH=/opt/sbin:/opt/bin:/usr/sbin:/usr/bin:/sbin:/bin
 	export LD_LIBRARY_PATH=/opt/lib:/lib
 	sleep 2
@@ -57,7 +47,8 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	logger -t "adbyby" "adbyby 开始运行..."
 	chmod 777 "$ad_home/bin/adbyby" && /tmp/adb/bin/adbyby&
 	echo -e "\033[41;37m adbyby 开始运行... \e[0m\n"
-	sleep 5
+	/tmp/adb/ad_gz >> /var/log/ad_gz.log 2>&1 &
+	sleep 3
 	check=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" | wc -l)
 	if [ "$check" = 0 ]; then
 		logger -t "adbyby" "adbyby启动失败。"
@@ -66,5 +57,4 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 else
 	echo -e "\e[1;31m  没有发现 adbyby 程序，没能启动 \e[0m"	 
 fi
-/tmp/adb/ad_gz >> /var/log/ad_gz.log 2>&1 &
-sleep 5 && /tmp/adb/adbchk.sh
+sleep 3 && /tmp/adb/adbchk.sh
