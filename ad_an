@@ -36,6 +36,7 @@ else
 		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbyby.sh -O /tmp/tmp_adbyby
 		cp -f /tmp/tmp_adbyby "$ad_home/adbyby.sh"	
 	fi
+	sleep 3 && mtd_storage.sh save
 	sleep 3 && sh /tmp/adb/adbyby.sh
 	echo -e "\e[1;34m 开始运行 adbyby 程序 \e[0m\n" && sleep 3
 fi
