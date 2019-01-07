@@ -32,6 +32,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 		grep "adbyby" $Run_script
 		if [ $? -eq 0 ]; then
 			echo "YES"
+/*
 		else
 			echo -e "\e[1;31m  添加开机启动脚本 \e[0m"
 			cat >> /etc/storage/post_wan_script.sh << EOF
@@ -43,6 +44,7 @@ else
 	/tmp/adb/adbyby.sh&
 fi
 EOF
+*/
 		fi
 
 	fi
