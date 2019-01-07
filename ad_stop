@@ -64,7 +64,7 @@ else
 	then
 		sed -i '/tmp/d /fi/d /else/d' $Run_script
 	fi
-	echo -e "\e[1;31m adbyby 卸载完成... \e[0m" && restart_dhcpd
+	restart_dhcpd && sleep 3 && echo -e "\e[1;31m adbyby 卸载完成... \e[0m"
 fi
 [ -f /var/log/ad_gz.log ] && rm -f /var/log/ad_gz.log;[ -f /var/log/adbyby_watchdog.log ] && rm -f /var/log/adbyby_watchdog.log
 [ -d /etc/storage/adb ] && rm -R /etc/storage/adb; [ -d /tmp/adb ] && rm -R /tmp/adb; sleep 3
