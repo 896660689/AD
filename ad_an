@@ -8,6 +8,7 @@ sleep 3
 if [ ! -d "$ad_home" ]; then
 	echo -e "\e[1;36m 创建 'Adbyby' 文件夹 \e[0m\n"
 	mkdir -p -m 777 "$ad_home"
+	[ ! -d /etc/storage/adb ] && mkdir -p -m 777 /etc/storage/adb
 fi
 
 if [ ! -f "$ad_home/bin/adbyby" ]; then
@@ -25,7 +26,9 @@ if [ ! -f "$ad_home/bin/adbyby" ]; then
 	#wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_stop -O /tmp/tmp_ad_stop
 	#sleep 2 && mv -f /tmp/tmp_ad_stop $ad_home/ad_stop && chmod 777 $ad_home/ad_stop
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adb.tar.gz -O /tmp/adb.tar.gz && sleep 2
-	tar -xzf "/tmp/adb.tar.gz" -C /tmp && sleep 2 && rm -R /tmp/adb.tar.gz 
+	tar -xzf "/tmp/adb.tar.gz" -C /tmp && sleep 2 && rm -R /tmp/adb.tar.gz
+	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad.sh -O /tmp/ad.sh
+	sleep 2 && mv -f /tmp/ad.sh /etc/storage/adb/ad.sh
 	echo -e "\e[1;34m adbyby 下载完成并成功解压文件 \e[0m\n" && sleep 3; sh "$ad_home/adbyby.sh"
 else
 	if [ -f "$ad_home/adbyby.sh" ]; then
@@ -39,5 +42,6 @@ else
 fi
 sleep 3 && [ -f /tmp/tmp_ad_stop ] && rm -f /tmp/tmp_ad_stop;[ -f /tmp/tmp_ad_up ] && rm -f /tmp/tmp_ad_up;[ -f /tmp/tmp_ad_whost ] && rm -f /tmp/tmp_ad_whost
 [ -f /tmp/tmp_ad_an ] && rm -f /tmp/tmp_ad_an;[ -f /tmp/adbyby.sh ] && rm -f /tmp/tmp_adbyby.sh
+sync; echo 3 > /proc/sys/vm/drop_caches
 sleep 3 && mtd_storage.sh save
 sleep 3 && exit 0
