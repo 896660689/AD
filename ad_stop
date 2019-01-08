@@ -62,10 +62,10 @@ else
 	grep "adb" $Run_script
 	if [ $? -eq 0 ]
 	then
-		sed -i '/adbyby/d' $Run_script
+		sed -i '/adb/d' $Run_script
 	fi
 	restart_dhcpd && sleep 3 && echo -e "\e[1;31m adbyby 卸载完成... \e[0m"
 fi
 [ -f /var/log/ad_gz.log ] && rm -f /var/log/ad_gz.log;[ -f /var/log/adbyby_watchdog.log ] && rm -f /var/log/adbyby_watchdog.log
 [ -d /tmp/adb ] && rm -R /tmp/adb; sleep 3;[ -f /tmp/cron_adb.lock ] && rm -f /tmp/cron_adb.lockexit
-[ ! -d "$ad_home" ] && exit 0
+[ ! -d "$ad_homea" ] && exit 0
