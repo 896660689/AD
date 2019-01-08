@@ -1,6 +1,7 @@
 #!/bin/sh
-## Adaptation Grassland in Lucheng 2018.12.11
+## Adaptation Grassland in Lucheng 2019.1.8
 
+Run_script="/etc/storage/post_wan_script.sh"
 ad_home="/tmp/adb"
 
 echo -e -n "\033[41;37m 开始构建 Adbyby 启动文件......\033[0m\n"
@@ -40,6 +41,15 @@ else
 	sleep 3 && sh /tmp/adb/adbyby.sh
 	echo -e "\e[1;34m 开始运行 adbyby 程序 \e[0m\n" && sleep 3
 fi
+grep "adb" $Run_script
+if [ $? -eq 0 ]; then
+	echo "YES"
+else
+	echo -e "\e[1;31m  添加开机启动脚本 \e[0m"
+	cat >> $Run_script << EOF
+/etc/storage/adb/ad.sh
+EOF
+
 sleep 3 && [ -f /tmp/tmp_ad_stop ] && rm -f /tmp/tmp_ad_stop;[ -f /tmp/tmp_ad_up ] && rm -f /tmp/tmp_ad_up;[ -f /tmp/tmp_ad_whost ] && rm -f /tmp/tmp_ad_whost
 [ -f /tmp/tmp_ad_an ] && rm -f /tmp/tmp_ad_an;[ -f /tmp/adbyby.sh ] && rm -f /tmp/tmp_adbyby.sh
 sync; echo 3 > /proc/sys/vm/drop_caches
