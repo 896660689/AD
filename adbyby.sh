@@ -1,5 +1,5 @@
 #!/bin/sh
-## Adaptation Grassland in Lucheng 2019.01.06
+## Adaptation Grassland in Lucheng 2019.01.08
 
 username=`nvram get http_username`
 Firewall_rules="/etc/storage/post_iptables_script.sh"
@@ -45,7 +45,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 		fi
 	fi
 	logger -t "adbyby" "adbyby 开始运行..."
-	chmod 777 "$ad_home/bin/adbyby" && /tmp/adb/bin/adbyby&
+	chmod 777 "$ad_home/bin/adbyby" && /tmp/adb/bin/stopadb; /tmp/adb/bin/startadb
 	echo -e "\033[41;37m adbyby 开始运行... \e[0m\n"
 	/tmp/adb/ad_gz >> /var/log/ad_gz.log 2>&1 &
 	sleep 3
