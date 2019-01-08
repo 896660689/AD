@@ -29,7 +29,7 @@ if [ -d "$ad_home" ]; then
 		sed -i '/adbchk/d' /etc/storage/cron/crontabs/$username
 	fi
 	
-	grep "adbyby" $Run_script
+	grep "adb" $Run_script
 	if [ $? -eq 0 ]
 	then
 		sed -i '/adbyby/d' $Run_script
@@ -59,7 +59,7 @@ else
 	then
 		sed -i '/adbchk/d' /etc/storage/cron/crontabs/$username
 	fi
-	grep "adbyby" $Run_script
+	grep "adb" $Run_script
 	if [ $? -eq 0 ]
 	then
 		sed -i '/adbyby/d' $Run_script
