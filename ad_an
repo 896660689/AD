@@ -29,7 +29,7 @@ if [ ! -f "$ad_home/bin/adbyby" ]; then
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adb.tar.gz -O /tmp/adb.tar.gz && sleep 2
 	tar -xzf "/tmp/adb.tar.gz" -C /tmp && sleep 2 && rm -R /tmp/adb.tar.gz
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad.sh -O /tmp/ad.sh
-	sleep 2 && mv -f /tmp/ad.sh /etc/storage/adb/ad.sh
+	sleep 2 && mv -f /tmp/ad.sh /etc/storage/adb/ad.sh && chmod 777 /etc/storage/adb/ad.sh
 	echo -e "\e[1;34m adbyby 下载完成并成功解压文件 \e[0m\n" && sleep 3; sh "$ad_home/adbyby.sh"
 else
 	if [ -f "$ad_home/adbyby.sh" ]; then
