@@ -38,7 +38,7 @@ sleep 60
 	fi
 	PIDS=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" |wc -l)
 	if [ $PIDS -eq 0 ]; then
-		[ -f $ad_home/bin/adbyby ] && $ad_home/bin/adbyby&
+		[ -f $ad_home/bin/adbyby ] && $ad_home/bin/startadb
 		echo "注意：TMP：adbyby 意外关闭,将重启adbyby!"
 		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 		exit 0
@@ -46,7 +46,7 @@ sleep 60
 	if [ $PIDS -gt 6 ]; then
 		echo "注意：发现 adbyby 多于6个进程,将重启adbyby!"
 		ps |grep "$ad_home/bin/adbyby" | grep -v 'grep' | awk '{print $1}' |xargs kill -9
-		$ad_home/bin/adbyby&
+		$ad_home/bin/startadb
 		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 		exit 0
 	fi
