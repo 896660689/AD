@@ -18,8 +18,8 @@ if [ ! -f "$ad_home/bin/adbyby" ]; then
 	tar -xzf "/tmp/7620n.tar.gz" -C $ad_home && sleep 2 && rm -R /tmp/7620n.tar.gz
 	#wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbyby.sh -O /tmp/tmp_adbyby
 	#sleep 2 && mv -f /tmp/tmp_adbyby $ad_home/adbyby.sh && chmod 777 /tmp/adb/adbyby.sh
-	#wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/adbchk.sh -O /tmp/tmp_ad_up
-	#sleep 2 && mv -f /tmp/tmp_ad_up $ad_home/adbchk.sh && chmod 777 $ad_home/adbchk.sh
+	#wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_up -O /tmp/tmp_ad_up
+	#sleep 2 && mv -f /tmp/tmp_ad_up $ad_home/ad_up && chmod 777 $ad_home/ad_up
 	#wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_gz -O /tmp/tmp_ad_gz
 	#sleep 2 && mv -f /tmp/tmp_ad_gz $ad_home/ad_gz && chmod 777 $ad_home/ad_gz
 	#wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_whost -O /tmp/tmp_ad_whost
