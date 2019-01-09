@@ -53,6 +53,10 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	if [ "$check" = 0 ]; then
 		logger -t "adbyby" "adbyby启动失败。"
 		exit 0
+	else
+		logger -t "adbyby" "添加8118透明代理端口。"
+		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+		logger -t "adbyby" "adbyby进程守护已启动。"
 	fi
 else
 	echo -e "\e[1;31m  没有发现 adbyby 程序，没能启动 \e[0m"	 
