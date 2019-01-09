@@ -152,7 +152,7 @@ if [ "$Function_options" == "8" ]; then
 	[ -f /tmp/hsfq_script.sh ] && rm -rf /tmp/hsfq_script.sh
 	wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/FHQ_ZQ -O \
 	/tmp/fhq_zq && chmod +x /tmp/fhq_zq && sh /tmp/fhq_zq
-	echo -e "\e[1;36m 添加 padavan 防火墙增强规则 \e[0m" && logger "padavan 防火墙增强规则,添加完成..." && sleep 3 
+	echo -e "\e[1;36m 完成 padavan 防火墙增强规则 \e[0m" && logger "padavan 防火墙规则,添加完成..." && sleep 3 
 	sh /tmp/Ad_Install
 fi
 
