@@ -34,6 +34,7 @@ sleep 60
 				sleep 40 && CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
 			done
 			logger -t "adbyby" "CPU 负载正常"
+			rm -f /tmp/cron_adb.lock
 		fi
 	fi
 	PIDS=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" |wc -l)
@@ -62,4 +63,3 @@ sleep 60
 		port=$(iptables -t nat -L | grep "tcp dpt:www redir ports 8118" | wc -l)
 	done
 done
-		
