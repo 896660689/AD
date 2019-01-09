@@ -15,7 +15,9 @@ echo -e "\e[1;33m >	4. 安装 \e[1;33mpadavan \033[44;37m HSFQ 去广告脚本 \
 
 echo -e "\e[1;31m >	5. 卸载 \e[1;36mpadavan HSFQ 去广告脚本\e[0m\n"
 
-echo -e "\e[1;33m >	6. 新版 \e[1;33mpadavan \033[45;37m 创建 Dns 环境 \e[0m\n"
+echo -e "\e[1;33m >	6. 安装 \e[1;33mpadavan \033[45;37m 创建 Dns 环境 \e[0m\n"
+
+echo -e "\e[1;33m >	7. 卸载 \e[1;33mpadavan \033[45;37m 恢复 Dns 环境 \e[0m\n"
 
 echo -e "\e[1;31m >	0. \033[41;37m退出\e[0m\n"
 
@@ -67,7 +69,7 @@ if [ "$Function_options" == "4" ]; then
 	[ -f /tmp/hsfq_script.sh ] && rm -rf /tmp/hsfq_script.sh
 	wget --no-check-certificate https://raw.githubusercontent.com/896660689/Hsfq/master/ss_ad.sh -O \
 	/tmp/hsfq_ssad.sh && chmod +x /tmp/hsfq_ssad.sh && . /tmp/hsfq_ssad.sh
-	sh /tmp/Hsfq_install
+	sh /tmp/Ad_Install
 fi
 
 if [ "$Function_options" == "5" ]; then
@@ -95,7 +97,7 @@ if [ "$Function_options" == "5" ]; then
 
 	[ -f "/tmp/hsfq_ssad.sh" ] && rm -f /tmp/hsfq_ssad.sh
 	echo -e "\e[1;34m--纯净去广告卸载完毕,返回主菜单--\e[0m\n" && sleep 3
-	sh /tmp/Hsfq_install
+	sh /tmp/Ad_Install
 fi
 
 if [ "$Function_options" == "6" ]; then
@@ -106,7 +108,7 @@ if [ "$Function_options" == "6" ]; then
 		echo -e "\e[1;34m 存在Dns文件,开始安装 \e[0m\n" && sleep 3
 	fi
 	[ -f /tmp/dns.sh ] && rm -f /tmp/dns.sh
-	sh /tmp/ssr_an
+	sh /tmp/Ad_Install
 fi
 
 if [ "$Function_options" == "7" ]; then
@@ -117,10 +119,7 @@ if [ "$Function_options" == "7" ]; then
 		sed -i '/log/d' /etc/storage/dnsmasq/dnsmasq.conf
 		sed -i '/1800/d' /etc/storage/dnsmasq/dnsmasq.conf	
 		sed -i '/dnsmasq.d/d' /etc/storage/dnsmasq/dnsmasq.conf
-		if [ ! -f "/etc/storage/dnsmasq.d/resolv" ]; then
-			sed -i '/176.103.130.131/d' /etc/resolv.conf
-			sed -i '/119.29.29.29/d' /etc/resolv.conf
-		else
+		if [ -f "/etc/storage/dnsmasq.d/resolv_bak" ]; then
 			cp -f /etc/storage/dnsmasq.d/resolv_bak /etc/resolv.conf
 		fi
 	fi
@@ -128,12 +127,6 @@ if [ "$Function_options" == "7" ]; then
 	if [ -d "/etc/storage/dnsmasq.d/hosts" ]; then
 		echo -e "\e[1;31m 删除残留文件夹以及配置 \e[0m\n" && sleep 2
 		rm -rf /etc/storage/dnsmasq.d
-	fi
-
-	if [ -f "/etc/storage/cron/crontabs/$username" ]; then
-		echo -e "\e[1;31m 删除更新计划任务 \e[0m\n" && sleep 2
-		sed -i '/hsfq_update.sh/d' /etc/storage/cron/crontabs/$username
-		killall crond;/usr/sbin/crond
 	fi
 
 	if [ -f "/etc/storage/post_iptables_script.sh" ]; then
@@ -149,7 +142,7 @@ if [ "$Function_options" == "7" ]; then
 		restart_dhcpd && /usr/sbin/dnsmasq restart >/dev/null 2>&1
 	fi
 	echo -e "\e[1;34m-- Hsfq 卸载完毕,返回主菜单--\e[0m\n" && sleep 3
-	sh /tmp/Hsfq_install
+	sh /tmp/Ad_Install
 fi
 
 if [ "$Function_options" == "0" ]; then
