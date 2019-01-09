@@ -16,19 +16,19 @@ sleep 60
 		CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
 		if [ $((CPULoad)) -ge "2" ] ; then
 			touch /tmp/cron_adb.lock
-			echo "【adbyby】CPU 负载拥堵,关闭广告屏蔽程序..."
+			echo " adbyby CPU 负载拥堵,关闭广告屏蔽程序..."
 			port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
-			echo "【adbyby】找到$port个8118透明代理端口,正在关闭..."
+			echo " adbyby 找到$port个8118透明代理端口,正在关闭..."
 			while [[ "$port" -ge 1 ]]
 			do
 				iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 				port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
 			done
-			logger -t "【$LOGTIME】""CPU 负载拥堵,关闭 adbyby 程序，关闭 8118 代理端口..."
-			echo "【$LOGTIME】""【adbyby】已关闭全部8118透明代理端口..."
+			logger " CPU 负载拥堵,关闭 adbyby 程序,关闭 8118 代理端口..."
+			echo "【$LOGTIME】"" adbyby 已关闭全部8118透明代理端口..."
 			killall adbyby
 			sed -i '/adb/d' /etc/storage/post_wan_script.sh
-			echo "【$LOGTIME】""【adbyby】进程已成功关闭..."
+			echo "【$LOGTIME】"" adbyby 进程已成功关闭..."
 		fi
 		processor=`cat /proc/cpuinfo| grep "processor"| wc -l`
 		processor=`expr $processor \* 2`
@@ -36,35 +36,35 @@ sleep 60
 		do
 			CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
 		done
-		echo "【$LOGTIME】""【adbyby】CPU 负载正常..."
+		echo "【$LOGTIME】"" adbyby CPU 负载正常..."
 		rm -f /tmp/cron_adb. lock
 	fi
 	PIDS=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" |wc -l)
 	if [ $PIDS -eq 0 ]; then
-		logger -t "【$LOGTIME】""注意:【adbyby】意外关闭,将重启 adbyby!"
+		logger "注意: adbyby 意外关闭,将重启 adbyby!"
 		[ -f $ad_home/bin/adbyby ] && $ad_home/bin/adbyby.sh
-		echo "【$LOGTIME】""注意:TMP:【adbyby】意外关闭,将重启 adbyby!"
+		echo "【$LOGTIME】""注意:TMP: adbyby 意外关闭,将重启 adbyby!"
 		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 		exit 0
 	fi
 	if [ $PIDS -gt 6 ]; then
-		echo "【$LOGTIME】""注意:发现【adbyby】多于6个进程,将重启 adbyby!"
+		echo "【$LOGTIME】""注意:发现 adbyby 多于6个进程,将重启 adbyby!"
 		ps |grep "$ad_home/bin/adbyby" | grep -v 'grep' | awk '{print $1}' |xargs kill -9
-		logger -t "【$LOGTIME】""注意:【adbyby】多于6个进程,将重启 adbyby!" && /tmp/adb/bin/adbyby.sh
+		logger "注意: adbyby 多于6个进程,将重启 adbyby!" && /tmp/adb/bin/adbyby.sh
 		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 		exit 0
 	fi
 	port=$(iptables -t nat -L | grep "tcp dpt:www redir ports 8118" | wc -l)
 	if [ $port -eq 0 ]; then
-		echo "【$LOGTIME】""注意:【adbyby】防火墙转发规则丢失,将添加规则!"
+		echo "【$LOGTIME】""注意: adbyby 防火墙转发规则丢失,将添加规则!"
 		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
-		logger -t "【$LOGTIME】""注意:【adbyby】防火墙转发规则丢失,将添加规则"
+		logger "注意: adbyby 防火墙转发规则丢失,将添加规则"
 	fi
 	while [ $port -gt 1 ]
 	do
 		echo "【$LOGTIME】""注意:发现 adbyby 多条防火墙转发规则,将删除多余规则!"
 		iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
-		logger -t "【$LOGTIME】""注意:发现 adbyby 多条防火墙转发规则,将删除多余规则!"
+		logger "注意:发现 adbyby 多条防火墙转发规则,将删除多余规则!"
 		port=$(iptables -t nat -L | grep "tcp dpt:www redir ports 8118" | wc -l)
 	done
 done
