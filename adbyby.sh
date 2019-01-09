@@ -60,4 +60,5 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 else
 	echo -e "\e[1;31m 没有发现 adbyby 程序,没能启动... \e[0m"	 
 fi
+echo -e "\e[1;31m adbyby 开始更新规则... \e[0m" && logger "adbyby 开始更新规则..."
 sleep 3 && /tmp/adb/ad_up
