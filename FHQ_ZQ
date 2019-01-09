@@ -4,9 +4,9 @@
 route_vlan=`/sbin/ifconfig br0 |grep "inet addr"| cut -f 2 -d ":"|cut -f 1 -d " " `
 Firewall_rules="/etc/storage/post_iptables_script.sh"
 
-echo -e "\e[1;36m 安装 padavan 防火墙增强规则 \e[0m"
+echo -e "\e[1;36m 添加 padavan 防火墙增强规则 \e[0m"
 if [ -f "$Firewall_rules" ]; then
-	grep "adb" $Run_script
+	grep "FORWARD" $Run_script
 	if [ $? -eq 0 ]
 	then
 		echo -e "\e[1;36m 已经存在增强规则 \e[0m"
@@ -21,3 +21,4 @@ if [ -f "$Firewall_rules" ]; then
 		echo -e "\e[1;34m 防火墙增强规则-安装完成 \e[0m\n" && logger " padavan 防火墙增强规则-安装完成..." && sleep 3
 	fi
 fi
+[ -f "/tmp/fhq_zq" ] && rm -f /tmp/fhq_zq
