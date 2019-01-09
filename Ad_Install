@@ -19,6 +19,8 @@ echo -e "\e[1;33m >	6. 安装 \e[1;33mpadavan \033[45;37m 创建 Dns 环境 \e[0
 
 echo -e "\e[1;31m >	7. 卸载 \e[1;36mpadavan 恢复 Dns 环境 \e[0m\n"
 
+echo -e "\e[1;33m >	8. 增强 \e[1;33mpadavan \033[45;37m 防火墙规则 \e[0m\n"
+
 echo -e "\e[1;31m >	0. \033[41;37m退出\e[0m\n"
 
 echo -e -n "\e[44;37m 请输入数字继续执行: \e[0m" 
@@ -65,10 +67,9 @@ if [ "$Function_options" == "3" ]; then
 fi
 
 if [ "$Function_options" == "4" ]; then
-	echo
 	[ -f /tmp/hsfq_script.sh ] && rm -rf /tmp/hsfq_script.sh
 	wget --no-check-certificate https://raw.githubusercontent.com/896660689/Hsfq/master/ss_ad.sh -O \
-	/tmp/hsfq_ssad.sh && chmod +x /tmp/hsfq_ssad.sh && . /tmp/hsfq_ssad.sh
+	/tmp/hsfq_ssad.sh && chmod +x /tmp/hsfq_ssad.sh && sh /tmp/hsfq_ssad.sh
 	echo -e "\e[1;34m HSOSTS 广告屏蔽脚本配置完成，返回主菜单 \e[0m\n" && logger " HSOSTS 广告屏蔽脚本配置完成..." && sleep 3 
 	sh /tmp/Ad_Install
 fi
@@ -143,6 +144,15 @@ if [ "$Function_options" == "7" ]; then
 		restart_dhcpd && /usr/sbin/dnsmasq restart >/dev/null 2>&1
 	fi
 	echo -e "\e[1;34m-- Hsfq 卸载完毕,返回主菜单--\e[0m\n" && logger " DNS 环境配置完成..." && sleep 3
+	sh /tmp/Ad_Install
+fi
+
+if [ "$Function_options" == "8" ]; then
+	echo
+	[ -f /tmp/hsfq_script.sh ] && rm -rf /tmp/hsfq_script.sh
+	wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/FHQ_ZQ -O \
+	/tmp/fhq_zq && chmod +x /tmp/fhq_zq && sh /tmp/fhq_zq
+	echo -e "\e[1;36m 添加 padavan 防火墙增强规则 \e[0m" && logger "padavan 防火墙增强规则,添加完成..." && sleep 3 
 	sh /tmp/Ad_Install
 fi
 
