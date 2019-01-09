@@ -9,7 +9,7 @@ if [ -d "$ad_home" ]; then
 	echo -e "\e[1;31m 关闭 adbyby 进程，代理端口任务 \e[0m"
 	/tmp/adb/bin/stopadb; sleep 3
 	logger -t "adbyby" "关闭 adbyby 进程，代理端口任务。"
-	grep -q "adbchk" /etc/storage/cron/crontabs/$username
+	grep -q "adb" /etc/storage/cron/crontabs/$username
 	if [ "$?" -eq "0" ]
 	then
 		sed -i '/adb/d' /etc/storage/cron/crontabs/$username
@@ -39,7 +39,7 @@ else
 		done
 		echo -e "\e[1;31m 关闭 adbyby 进程，代理端口任务 \e[0m"
 	fi
-	grep -q "adbchk" /etc/storage/cron/crontabs/$username
+	grep -q "adb" /etc/storage/cron/crontabs/$username
 	if [ "$?" -eq "0" ]
 	then
 		sed -i '/adb/d' /etc/storage/cron/crontabs/$username
