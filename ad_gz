@@ -18,7 +18,7 @@ sleep 60
 			touch /tmp/cron_adb.lock
 			echo "【adbyby】CPU 负载拥堵,关闭广告屏蔽程序..."
 			port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
-			echo "adbyby 找到$port个8118透明代理端口,正在关闭..."
+			echo "【adbyby】找到$port个8118透明代理端口,正在关闭..."
 			while [[ "$port" -ge 1 ]]
 			do
 				iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
