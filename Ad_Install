@@ -106,7 +106,7 @@ if [ "$Function_options" == "6" ]; then
 	if [ ! -d "/tmp/dns.sh" ]; then
 		wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/Dns.sh -O /tmp/dns.sh;sh /tmp/dns.sh
 	else
-		sh /tmp/dns.sh
+		chmod +x /tmp/dns.sh && sh /tmp/dns.sh
 		echo -e "\e[1;34m 存在Dns文件,开始安装 \e[0m\n" && sleep 3
 	fi
 	[ -f /tmp/dns.sh ] && rm -f /tmp/dns.sh
