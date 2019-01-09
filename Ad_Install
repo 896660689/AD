@@ -113,12 +113,10 @@ fi
 
 if [ "$Function_options" == "7" ]; then
 	if [ -f "/etc/storage/dnsmasq/dnsmasq.conf" ]; then
-		grep "queries" /etc/storage/dnsmasq/dnsmasq.conf
 		echo -e "\e[1;31m 开始卸载启动规则 \e[0m\n"
 		sed -i '/127.0.0.1/d' /etc/storage/dnsmasq/dnsmasq.conf
 		sed -i '/log/d' /etc/storage/dnsmasq/dnsmasq.conf
-		sed -i '/1800/d' /etc/storage/dnsmasq/dnsmasq.conf	
-		sed -i '/dnsmasq.d/d' /etc/storage/dnsmasq/dnsmasq.conf
+		#sed -i '/3600/d' /etc/storage/dnsmasq/dnsmasq.conf
 		if [ -f "/etc/storage/dnsmasq.d/resolv_bak" ]; then
 			cp -f /etc/storage/dnsmasq.d/resolv_bak /etc/resolv.conf
 		fi
