@@ -117,6 +117,7 @@ if [ "$Function_options" == "7" ]; then
 		sed -i '/127.0.0.1/d' /etc/storage/dnsmasq/dnsmasq.conf
 		sed -i '/log/d' /etc/storage/dnsmasq/dnsmasq.conf
 		#sed -i '/3600/d' /etc/storage/dnsmasq/dnsmasq.conf
+		#sed -i '/conf-dir/d' /etc/storage/dnsmasq/dnsmasq.conf
 		if [ -f "/etc/storage/dnsmasq.d/resolv_bak" ]; then
 			cp -f /etc/storage/dnsmasq.d/resolv_bak /etc/resolv.conf
 		fi
