@@ -35,7 +35,7 @@ if [ "$Function_options" == "1" ]; then
 		[ -f /tmp/ad_an ] && rm -f /tmp/ad_an; sleep 6 && sh /tmp/Ad_Install
 	else
 		chmod 777 /tmp/ad_an;sh /tmp/ad_an
-		echo -e "\e[1;34m 安装完成;开始运行 \e[0m\n" && sleep 3
+		echo -e "\e[1;34m 安装完成,开始运行 \e[0m\n" && logger " Adbyby 安装完成,开始运行..." && sleep 3
 		[ -f /tmp/ad_an ] && rm -f /tmp/ad_an; sleep 6 && sh /tmp/Ad_Install
 	fi
 fi
@@ -47,19 +47,19 @@ if [ "$Function_options" == "2" ]; then
 		sh /tmp/ad_up
 	else
 		sh /tmp/adb/ad_up
-		echo -e "\e[1;34m 更新已完成,返回主菜单 \e[0m\n" && sleep 3
+		echo -e "\e[1;34m 更新已完成,返回主菜单 \e[0m\n" && logger " Adbyby 更新已完成..." && sleep 3
 	fi
 	[ -f /tmp/ad_up ] && rm -f /tmp/ad_up; sleep 3 && sh /tmp/Ad_Install
 fi
 
 if [ "$Function_options" == "3" ]; then
 	if [ ! -f /tmp/adb/ad_stop ]; then
-		echo -e "\e[1;34m 没有发现卸载文件,开始下载 \e[0m\n" && sleep 3
+		echo -e "\e[1;34m 没有发现卸载文件,开始下载 \e[0m\n" && logger " Adbyby 卸载已完成..."  && sleep 3
 		wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/ad_stop -O /tmp/tmp_ad_stop && sleep 2
 		chmod 777 /tmp/tmp_ad_stop; sh /tmp/tmp_ad_stop
 	else
 		chmod 777 /tmp/adb/ad_stop; sh /tmp/adb/ad_stop
-		echo -e "\e[1;34m 卸载已完成,返回主菜单 \e[0m\n" && sleep 3
+		echo -e "\e[1;34m 卸载已完成,返回主菜单 \e[0m\n" && logger " Adbyby 卸载已完成..." && sleep 3
 	fi
 	[ -f /tmp/tmp_ad_stop ] && rm -f /tmp/tmp_ad_stop; sleep 3 && sh /tmp/Ad_Install
 fi
@@ -69,6 +69,7 @@ if [ "$Function_options" == "4" ]; then
 	[ -f /tmp/hsfq_script.sh ] && rm -rf /tmp/hsfq_script.sh
 	wget --no-check-certificate https://raw.githubusercontent.com/896660689/Hsfq/master/ss_ad.sh -O \
 	/tmp/hsfq_ssad.sh && chmod +x /tmp/hsfq_ssad.sh && . /tmp/hsfq_ssad.sh
+	echo -e "\e[1;34m HSOSTS 广告屏蔽脚本配置完成，返回主菜单 \e[0m\n" && logger " HSOSTS 广告屏蔽脚本配置完成..." && sleep 3 
 	sh /tmp/Ad_Install
 fi
 
@@ -96,7 +97,7 @@ if [ "$Function_options" == "5" ]; then
 	fi
 
 	[ -f "/tmp/hsfq_ssad.sh" ] && rm -f /tmp/hsfq_ssad.sh
-	echo -e "\e[1;34m--纯净去广告卸载完毕,返回主菜单--\e[0m\n" && sleep 3
+	echo -e "\e[1;34m--HSOSTS 广告屏蔽脚本卸载完毕,返回主菜单--\e[0m\n" && logger " HSOSTS 广告屏蔽脚本卸载完成..." && sleep 3
 	sh /tmp/Ad_Install
 fi
 
@@ -108,6 +109,7 @@ if [ "$Function_options" == "6" ]; then
 		echo -e "\e[1;34m 存在Dns文件,开始安装 \e[0m\n" && sleep 3
 	fi
 	[ -f /tmp/dns.sh ] && rm -f /tmp/dns.sh
+	echo -e "\e[1;34m DNS 环境配置完成，返回主菜单 \e[0m\n" && logger " DNS 环境配置完成..." && sleep 3
 	sh /tmp/Ad_Install
 fi
 
@@ -140,7 +142,7 @@ if [ "$Function_options" == "7" ]; then
 		echo -e "\e[1;31m 重启 dnsmasq \e[0m\n"
 		restart_dhcpd && /usr/sbin/dnsmasq restart >/dev/null 2>&1
 	fi
-	echo -e "\e[1;34m-- Hsfq 卸载完毕,返回主菜单--\e[0m\n" && sleep 3
+	echo -e "\e[1;34m-- Hsfq 卸载完毕,返回主菜单--\e[0m\n" && logger " DNS 环境配置完成..." && sleep 3
 	sh /tmp/Ad_Install
 fi
 
