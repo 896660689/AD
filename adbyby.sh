@@ -54,6 +54,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 		logger -t "adbyby" "adbyby启动失败。"
 		exit 0
 	else
+		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 		logger -t "adbyby" "adbyby进程守护已启动。"
 	fi
 else
