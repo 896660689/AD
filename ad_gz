@@ -25,7 +25,7 @@ sleep 60
 			done
 			logger -t "adbyby" "已关闭全部8118透明代理端口。"
 			killall adbyby
-			sed -i '/tmp/d /else/d /fi/d' /etc/storage/post_wan_script.sh
+			sed -i '/adb/d' /etc/storage/post_wan_script.sh
 			logger -t "adbyby" "adbyby 进程已成功关闭。"
 			processor=`cat /proc/cpuinfo| grep "processor"| wc -l`
 			processor=`expr $processor \* 2`
@@ -46,7 +46,7 @@ sleep 60
 	if [ $PIDS -gt 6 ]; then
 		echo "注意：发现 adbyby 多于6个进程,将重启adbyby!"
 		ps |grep "$ad_home/bin/adbyby" | grep -v 'grep' | awk '{print $1}' |xargs kill -9
-		$ad_home/bin/startadb
+		/tmp/adb/bin/adbyby
 		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 		exit 0
 	fi
@@ -62,3 +62,4 @@ sleep 60
 		port=$(iptables -t nat -L | grep "tcp dpt:www redir ports 8118" | wc -l)
 	done
 done
+		
