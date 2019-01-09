@@ -9,15 +9,15 @@ echo -e "\e[1;33m >	1. 安装 \e[1;33mpadavan \033[41;37m Adbyby_7620n \e[0m\n"
 
 echo -e "\e[1;32m >	2. 更新 \e[1;36mpadavan \033[44;37m Adbyby 规则 \e[0m\n"
 
-echo -e "\e[1;31m >	3. 卸载 \e[1;36mpadavan Adbyby_7620n \e[0m\n"
+echo -e "\e[1;31m >	3. 卸载 \e[1;36mpadavan	Adbyby_7620n \e[0m\n"
 
 echo -e "\e[1;33m >	4. 安装 \e[1;33mpadavan \033[44;37m HSOSTS 广告屏蔽脚本 \e[0m\n"
 
-echo -e "\e[1;31m >	5. 卸载 \e[1;36mpadavan HSOSTS 广告屏蔽脚本\e[0m\n"
+echo -e "\e[1;31m >	5. 卸载 \e[1;36mpadavan	HSOSTS 广告屏蔽脚本\e[0m\n"
 
 echo -e "\e[1;33m >	6. 安装 \e[1;33mpadavan \033[45;37m 创建 Dns 环境 \e[0m\n"
 
-echo -e "\e[1;31m >	7. 卸载 \e[1;36mpadavan 恢复 Dns 环境 \e[0m\n"
+echo -e "\e[1;31m >	7. 卸载 \e[1;36mpadavan	恢复 Dns 环境 \e[0m\n"
 
 echo -e "\e[1;33m >	8. 增强 \e[1;33mpadavan \033[45;37m 防火墙规则 \e[0m\n"
 
