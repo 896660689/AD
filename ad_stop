@@ -6,33 +6,18 @@ Firewall_rules="/etc/storage/post_iptables_script.sh"
 Run_script="/etc/storage/post_wan_script.sh"
 
 if [ -d "$ad_home" ]; then
-	if [ -n "`pidof adbyby`" ] ; then
-		kill -9 "`pidof adbyby`"
-	fi
-	while [ -n "`pidof ad_gz`" ] ; do
-		kill -9 "`pidof ad_gz`"
-	done
-	sleep 3
-	if [ -f "$ad_home/bin/adbyby" ]; then
-		port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
-		logger -t "adbyby" "找到$port个8118透明代理端口，正在关闭。"
-		while [[ "$port" -ge 1 ]]
-		do
-			iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
-			port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
-		done
-		echo -e "\e[1;31m 关闭 adbyby 进程，代理端口任务 \e[0m"
-	fi
+	echo -e "\e[1;31m 关闭 adbyby 进程，代理端口任务 \e[0m"
+	/tmp/adb/bin/stopadb; sleep 3
+	logger -t "adbyby" "关闭 adbyby 进程，代理端口任务。"
 	grep -q "adbchk" /etc/storage/cron/crontabs/$username
 	if [ "$?" -eq "0" ]
 	then
-		sed -i '/adbchk/d' /etc/storage/cron/crontabs/$username
+		sed -i '/adb/d' /etc/storage/cron/crontabs/$username
 	fi
-	
 	grep "adb" $Run_script
 	if [ $? -eq 0 ]
 	then
-		sed -i '/adbyby/d' $Run_script
+		sed -i '/adb/d' $Run_script
 	fi
 	restart_dhcpd && echo "adbyby 卸载完成" && logger -t "【adbyby】" "adbyby 已卸载完成...。"
 else
@@ -57,7 +42,7 @@ else
 	grep -q "adbchk" /etc/storage/cron/crontabs/$username
 	if [ "$?" -eq "0" ]
 	then
-		sed -i '/adbchk/d' /etc/storage/cron/crontabs/$username
+		sed -i '/adb/d' /etc/storage/cron/crontabs/$username
 	fi
 	grep "adb" $Run_script
 	if [ $? -eq 0 ]
