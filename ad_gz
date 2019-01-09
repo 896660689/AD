@@ -46,7 +46,7 @@ sleep 60
 	if [ $PIDS -gt 6 ]; then
 		echo "注意：发现 adbyby 多于6个进程,将重启adbyby!"
 		ps |grep "$ad_home/bin/adbyby" | grep -v 'grep' | awk '{print $1}' |xargs kill -9
-		/tmp/adb/bin/adbyby
+		/tmp/adb/bin/staradb
 		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 		exit 0
 	fi
