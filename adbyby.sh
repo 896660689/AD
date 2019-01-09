@@ -19,7 +19,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	if [ -n "`pidof adbyby`" ] ; then
 		kill -9 "`pidof adbyby`"
 	fi
-	logger -t "adbyby" "adbyby进程已成功关闭。"
+	logger -t "adbyby" "adbyby 进程已成功关闭。"
 	if [ -f "/etc/storage/cron/crontabs/$username" ]; then
 		grep "adbchk" /etc/storage/cron/crontabs/$username
 		if [ $? -eq 0 ]; then
@@ -54,7 +54,6 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 		logger -t "adbyby" "adbyby启动失败。"
 		exit 0
 	else
-		logger -t "adbyby" "添加8118透明代理端口。"
 		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 		logger -t "adbyby" "adbyby进程守护已启动。"
 	fi
