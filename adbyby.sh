@@ -21,11 +21,11 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	fi
 	logger -t "adbyby" "adbyby 进程已成功关闭。"
 	if [ -f "/etc/storage/cron/crontabs/$username" ]; then
-		grep "adbchk" /etc/storage/cron/crontabs/$username
+		grep "adb" /etc/storage/cron/crontabs/$username
 		if [ $? -eq 0 ]; then
 			echo "YES"
 		else
-			sed -i '$a 30 5 * * * /bin/sh /tmp/adb/adbchk.sh >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
+			sed -i '$a 30 5 * * * /bin/sh /tmp/adb/ad_up >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
 		fi
 	fi
 	export PATH=/opt/sbin:/opt/bin:/usr/sbin:/usr/bin:/sbin:/bin
@@ -60,4 +60,4 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 else
 	echo -e "\e[1;31m  没有发现 adbyby 程序，没能启动 \e[0m"	 
 fi
-sleep 3 && /tmp/adb/adbchk.sh
+sleep 3 && /tmp/adb/ad_up
