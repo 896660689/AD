@@ -45,7 +45,7 @@ fi
 if [ "$Function_options" == "2" ]; then
 	if [ ! -f /tmp/adb/ad_up ]; then
 		echo -e "\e[1;34m 没有发现 Ad_up,开始下载更新文件 \e[0m\n" && sleep 3
-		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/ad_up -O /tmp/ad_up && sleep 2
+		wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/file/ad_up -O /tmp/ad_up && sleep 2
 		sh /tmp/ad_up
 	else
 		sh /tmp/adb/ad_up
@@ -57,7 +57,7 @@ fi
 if [ "$Function_options" == "3" ]; then
 	if [ ! -f /tmp/adb/ad_stop ]; then
 		echo -e "\e[1;34m 没有发现卸载文件,开始下载 \e[0m\n" && logger " Adbyby 卸载已完成..."  && sleep 3
-		wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/ad_stop -O /tmp/tmp_ad_stop && sleep 2
+		wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/file/ad_stop -O /tmp/tmp_ad_stop && sleep 2
 		chmod 777 /tmp/tmp_ad_stop; sh /tmp/tmp_ad_stop
 	else
 		chmod 777 /tmp/adb/ad_stop; sh /tmp/adb/ad_stop
@@ -68,7 +68,7 @@ fi
 
 if [ "$Function_options" == "4" ]; then
 	[ -f /tmp/hsfq_script.sh ] && rm -rf /tmp/hsfq_script.sh
-	wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/Hs_ad -O \
+	wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/Other/Hs_ad -O \
 	/tmp/hsfq_ssad.sh && chmod +x /tmp/hsfq_ssad.sh && sh /tmp/hsfq_ssad.sh
 	echo -e "\e[1;34m HSOSTS 广告屏蔽脚本配置完成，返回主菜单 \e[0m\n" && logger " HSOSTS 广告屏蔽脚本配置完成..." && sleep 3 
 	sh /tmp/Ad_Install
@@ -104,7 +104,7 @@ fi
 
 if [ "$Function_options" == "6" ]; then
 	if [ ! -d "/tmp/dns.sh" ]; then
-		wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/Dns.sh -O /tmp/dns.sh;sh /tmp/dns.sh
+		wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/Other/Dns.sh -O /tmp/dns.sh;sh /tmp/dns.sh
 	else
 		chmod +x /tmp/dns.sh && sh /tmp/dns.sh
 		echo -e "\e[1;34m 存在Dns文件,开始安装 \e[0m\n" && sleep 3
@@ -154,7 +154,7 @@ fi
 if [ "$Function_options" == "8" ]; then
 	echo
 	[ -f /tmp/hsfq_script.sh ] && rm -rf /tmp/hsfq_script.sh
-	wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/FHQ_ZQ -O \
+	wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/Other/FHQ_ZQ -O \
 	/tmp/fhq_zq && chmod +x /tmp/fhq_zq && sh /tmp/fhq_zq
 	echo -e "\e[1;36m 完成 padavan 防火墙增强规则 \e[0m" && logger "padavan 防火墙规则,添加完成..." && sleep 3 
 	sh /tmp/Ad_Install
