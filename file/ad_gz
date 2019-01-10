@@ -59,7 +59,7 @@ sleep 60
 	while [ $PIDS -eq 0 ]
 	do
 		logger "注意: adbyby 意外关闭,将重启 adbyby!"
-		[ -f $Ad_Home/bin/adbyby ] && $Ad_Home/bin/adbyby.sh
+		[ -f $Ad_Home/bin/adbyby ] && $Ad_Home/adbyby.sh
 		loger "注意:TMP: adbyby 意外关闭,将重启 adbyby!"
 		func_Open_port
 		exit 0
