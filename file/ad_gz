@@ -51,6 +51,15 @@ sleep 60
 			loger "adbyby 已关闭全部8118透明代理端口..."
 			killall adbyby
 			sed -i '/adb/d' /etc/storage/post_wan_script.sh
+			processor=`cat /proc/cpuinfo| grep "processor"| wc -l`
+			processor=`expr $processor \* 2`
+			while [[ "$CPULoad" -gt "$processor" ]]
+			do
+				sleep 15
+				CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
+			done
+			logger -t "adbyby" "CPU 负载正常"
+			rm -f /tmp/cron_adb.lock	
 		done
 	done
 	rm -f /tmp/cron_adb.lock
