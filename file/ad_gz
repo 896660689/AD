@@ -51,10 +51,10 @@ sleep 60
 			loger "adbyby 已关闭全部8118透明代理端口..."
 			killall adbyby
 			sed -i '/adb/d' /etc/storage/post_wan_script.sh
-			logger "adbyby" "CPU 负载正常"
 		done
-		rm -f /tmp/cron_adb.lock
+		logger "adbyby" "CPU 负载正常"
 	done
+	rm -f /tmp/cron_adb.lock
 	func_See_PIDS
 	while [ $PIDS -eq 0 ]
 	do
@@ -87,4 +87,3 @@ sleep 60
 		func_See_port
 	done
 done
-
