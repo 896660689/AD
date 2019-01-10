@@ -1,5 +1,6 @@
 #!/bin/sh
-## Adaptation Grassland in Lucheng 2019.01.06
+## Adaptation Grassland in Lucheng 2019.01.10
+
 username=`nvram get http_username`
 ad_home="/tmp/adb"
 Firewall_rules="/etc/storage/post_iptables_script.sh"
@@ -51,6 +52,6 @@ else
 	fi
 	restart_dhcpd && sleep 3 && echo -e "\e[1;31m adbyby 卸载完成... \e[0m"
 fi
-[ -f /var/log/ad_gz.log ] && rm -f /var/log/ad_gz.log;[ -f /var/log/adbyby_watchdog.log ] && rm -f /var/log/adbyby_watchdog.log
+[ -f /var/log/adbyby_watchdog.log ] && rm -f /var/log/adbyby_watchdog.log
 [ -d /tmp/adb ] && rm -R /tmp/adb; sleep 3;[ -f /tmp/cron_adb.lock ] && rm -f /tmp/cron_adb.lock
 [ ! -d "$ad_homea" ] && exit 0
