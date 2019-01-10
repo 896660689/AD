@@ -68,7 +68,7 @@ sleep 60
 	do
 		loger "注意:发现 adbyby 多于6个进程,将重启 adbyby!"
 		ps |grep "$Ad_Home/bin/adbyby" | grep -v 'grep' | awk '{print $1}' |xargs kill -9
-		logger "注意: adbyby 多于6个进程,将重启 adbyby!" && /tmp/adb/bin/adbyby.sh
+		logger "注意: adbyby 多于6个进程,将重启 adbyby!" && /tmp/adb/adbyby.sh
 		func_Open_port
 		exit 0
 	done
