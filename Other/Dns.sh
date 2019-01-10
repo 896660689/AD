@@ -78,5 +78,5 @@ grep "dnsmasq.log" /etc/storage/cron/crontabs/$username
 if [ $? -eq 0 ]; then
 	echo "YES"
 else
-	sed -i '$a 01 * * * * cat /dev/null > /var/log/dnsmasq.log' /etc/storage/cron/crontabs/$username
+	sed -i '$a 03 * * * * cat /dev/null > /var/log/dnsmasq.log' /etc/storage/cron/crontabs/$username
 fi
