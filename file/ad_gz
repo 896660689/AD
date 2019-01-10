@@ -6,47 +6,72 @@ LOGFILE=/var/log/adbyby_watchdog.log
 Ad_Home="/tmp/adb"
 max_log_bytes=6000
 
-touch $LOGFILE
+loger(){
+	[ -f $LOGFILE ] && [ $(stat -c %s $LOGFILE) -gt $max_log_bytes ] && rm -f $LOGFILE
+	time=$(date "+%H:%M:%S")
+	echo "$time adbyby_watchdog $1" >> $LOGFILE
+}
+
+func_Open_port(){
+	iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+}
+
+func_Close_port(){
+	iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+}
+
+func_See_CPULoad(){
+	CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
+
+}
+
+func_See_port(){
+	port=`iptables -t nat -L | grep "tcp dpt:www redir ports 8118" | wc -l`
+}
+
+func_See_processor(){
+	processor=`cat /proc/cpuinfo| grep "processor"| wc -l`
+	processor=`expr $processor \* 2`
+}
+
+func_See_PIDS(){
+	PIDS=`ps |grep "$Ad_Home/bin/adbyby" |grep -v "grep" |wc -l`
+}
+
+[ ! -f $LOGFILE ] && touch $LOGFILE
 while true; do
-	loger(){
-		[ -f $LOGFILE ] && [ $(stat -c %s $LOGFILE) -gt $max_log_bytes ] && rm -f $LOGFILE
-		time=$(date "+%H:%M:%S")
-		echo "$time adbyby_watchdog $1" >> $LOGFILE
-	}
+sleep 60
 	while [ ! -f /tmp/cron_adb.lock ]
 	do
-		CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
 		while [ $((CPULoad)) -ge "2" ]
 		do
 			touch /tmp/cron_adb.lock
-			port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
+			func_See_CPULoad
 			while [[ "$port" -ge 1 ]]
 			do
 				logger " adbyby 找到$port个8118透明代理端口,正在关闭..."
-				iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
-				port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
+				func_Close_port;func_See_port
 			done
 			loger "【$LOGTIME】"" adbyby CPU 负载拥堵,已关闭全部8118透明代理端口..."
 			killall adbyby
 			sed -i '/adb/d' /etc/storage/post_wan_script.sh
 			loger "【$LOGTIME】"" adbyby 进程已成功关闭..."
 		done
-		processor=`cat /proc/cpuinfo| grep "processor"| wc -l`
-		processor=`expr $processor \* 2`
+		func_See_processor
 		while [[ "$CPULoad" -gt "$processor" ]] 
 		do
-			CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
+			func_See_CPULoad
 		done
 		loger "【$LOGTIME】"" adbyby CPU 负载正常..."
 		rm -f /tmp/cron_adb. lock
 	done
-	PIDS=$(ps |grep "$Ad_Home/bin/adbyby" |grep -v "grep" |wc -l)
+	func_See_PIDS
 	while [ $PIDS -eq 0 ]
 	do
 		logger "注意: adbyby 意外关闭,将重启 adbyby!"
 		[ -f $Ad_Home/bin/adbyby ] && $Ad_Home/bin/adbyby.sh
 		loger "【$LOGTIME】""注意:TMP: adbyby 意外关闭,将重启 adbyby!"
-		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+		func_Open_port
 		exit 0
 	done
 	while [ $PIDS -gt 6 ]
@@ -54,22 +79,21 @@ while true; do
 		loger "【$LOGTIME】""注意:发现 adbyby 多于6个进程,将重启 adbyby!"
 		ps |grep "$Ad_Home/bin/adbyby" | grep -v 'grep' | awk '{print $1}' |xargs kill -9
 		logger "注意: adbyby 多于6个进程,将重启 adbyby!" && /tmp/adb/bin/adbyby.sh
-		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+		func_Open_port
 		exit 0
 	done
-	port=$(iptables -t nat -L | grep "tcp dpt:www redir ports 8118" | wc -l)
+	func_See_port
 	while [ $port -eq 0 ]
 	do
 		loger "【$LOGTIME】""注意: adbyby 防火墙转发规则丢失,将添加规则!"
-		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+		func_Open_port
 		logger "注意: adbyby 防火墙转发规则丢失,将添加规则"
 	done
 	while [ $port -gt 1 ]
 	do
 		loger "【$LOGTIME】""注意:发现 adbyby 多条防火墙转发规则,将删除多余规则!"
-		iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+		func_Close_port
 		logger "注意:发现 adbyby 多条防火墙转发规则,将删除多余规则!"
-		port=$(iptables -t nat -L | grep "tcp dpt:www redir ports 8118" | wc -l)
+		func_See_port
 	done
-	sleep 60
 done
