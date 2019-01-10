@@ -26,16 +26,11 @@ func_See_CPULoad(){
 }
 
 func_See_port(){
-	port=`iptables -t nat -L | grep "tcp dpt:www redir ports 8118" | wc -l`
-}
-
-func_See_processor(){
-	processor=`cat /proc/cpuinfo| grep "processor"| wc -l`
-	processor=`expr $processor \* 2`
+	port=`iptables -t nat -L | grep 'ports 8118' | wc -l`
 }
 
 func_See_PIDS(){
-	PIDS=`ps |grep "$Ad_Home/bin/adbyby" |grep -v "grep" |wc -l`
+	PIDS=`ps | grep "$adbybydir/adbyby/bin/adbyby" | grep -v "grep" | wc -l`
 }
 
 [ ! -f $LOGFILE ] && touch $LOGFILE
@@ -45,25 +40,21 @@ sleep 60
 	do
 		while [ $((CPULoad)) -ge "2" ]
 		do
+			loger "adbyby" "CPU 负载拥堵, 关闭广告屏蔽程序。"
 			touch /tmp/cron_adb.lock
-			func_See_CPULoad
+			func_See_port
 			while [[ "$port" -ge 1 ]]
 			do
 				logger "adbyby 找到$port个8118透明代理端口,正在关闭..."
 				func_Close_port;func_See_port
 			done
-			loger "adbyby CPU 负载拥堵,已关闭全部8118透明代理端口..."
+			loger "adbyby 已关闭全部8118透明代理端口..."
 			killall adbyby
 			sed -i '/adb/d' /etc/storage/post_wan_script.sh
 			loger "adbyby 进程已成功关闭..."
 		done
-		func_See_processor
-		while [[ "$CPULoad" -gt "$processor" ]] 
-		do
-			func_See_CPULoad
-		done
+		rm -f /tmp/cron_adb. lock
 	done
-	loger "adbyby CPU 负载正常..." && rm -f /tmp/cron_adb. lock
 	func_See_PIDS
 	while [ $PIDS -eq 0 ]
 	do
