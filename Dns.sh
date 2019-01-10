@@ -1,5 +1,6 @@
 #!/bin/sh
 # Compile:by-lanse	2019-1-9
+username=`nvram get http_username`
 route_vlan=`/sbin/ifconfig br0 |grep "inet addr"| cut -f 2 -d ":"|cut -f 1 -d " " `
 
 echo -e -n "\033[41;37m 开始构建翻墙平台......\033[0m\n"
@@ -72,4 +73,10 @@ if [ -f "/etc/storage/post_iptables_script.sh" ]; then
 	sed -i '$a cp -f /etc/storage/dnsmasq.d/resolv.conf /tmp/resolv.conf' /etc/storage/post_iptables_script.sh
 	sed -i '$a sed -i "/#/d" /tmp/resolv.conf;mv -f /tmp/resolv.conf /etc/resolv.conf' /etc/storage/post_iptables_script.sh
 	sed -i '$a restart_dhcpd' /etc/storage/post_iptables_script.sh
+fi
+grep "dnsmasq.log" /etc/storage/cron/crontabs/$username
+if [ $? -eq 0 ]; then
+	echo "YES"
+else
+	sed -i '$a 01 * * * * cat /dev/null > /var/log/dnsmasq.log' /etc/storage/cron/crontabs/$username
 fi
