@@ -47,7 +47,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	logger "adbyby" "adbyby 开始运行..."
 	chmod 777 "$ad_home/bin/adbyby" && /tmp/adb/bin/stopadb; /tmp/adb/bin/startadb
 	echo -e "\033[41;37m adbyby 开始运行... \e[0m\n"
-	/tmp/adb/ad_gz >> /var/log/ad_gz.log 2>&1 &
+	nohup /tmp/adb/ad_gz >> /var/log/ad_gz.log 2>&1 &
 	sleep 3
 	check=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" | wc -l)
 	if [ "$check" = 0 ]; then
@@ -61,4 +61,4 @@ else
 	echo -e "\e[1;31m 没有发现 adbyby 程序,没能启动... \e[0m"	 
 fi
 echo -e "\e[1;31m adbyby 开始更新规则... \e[0m" && logger "adbyby 开始更新规则..."
-sleep 3 && /tmp/adb/ad_up
+/tmp/adb/ad_up && sleep 3; exit 0
