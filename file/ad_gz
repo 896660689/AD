@@ -63,8 +63,7 @@ sleep 60
 			func_See_CPULoad
 		done
 	done
-	loger "【$LOGTIME】"" adbyby CPU 负载正常..."
-	rm -f /tmp/cron_adb. lock
+	loger "【$LOGTIME】"" adbyby CPU 负载正常..." && rm -f /tmp/cron_adb. lock
 	func_See_PIDS
 	while [ $PIDS -eq 0 ]
 	do
