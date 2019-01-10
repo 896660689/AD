@@ -1,5 +1,5 @@
 #!/bin/sh
-## Adaptation Grassland in Lucheng 2019.01.06
+## Adaptation Grassland in Lucheng 2019.01.10
 
 if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 	touch /tmp/adbyby.mem
