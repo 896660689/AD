@@ -137,7 +137,6 @@ if [ "$Function_options" == "7" ]; then
 		sed -i '/iptables-save/d' /etc/storage/post_iptables_script.sh
 		sed -i '/resolv.conf/d' /etc/storage/post_iptables_script.sh
 		sed -i '/restart_dhcpd/d' /etc/storage/post_iptables_script.sh
-		
 	fi
 	grep "dnsmasq.log" /etc/storage/cron/crontabs/`nvram get http_username`
 	if [ $? -eq 0 ]; then
