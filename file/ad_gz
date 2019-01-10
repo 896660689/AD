@@ -20,14 +20,13 @@ while true; do
 		do
 			touch /tmp/cron_adb.lock
 			port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
-			loger " adbyby 找到$port个8118透明代理端口,正在关闭..."
 			while [[ "$port" -ge 1 ]]
 			do
+				logger " adbyby 找到$port个8118透明代理端口,正在关闭..."
 				iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 				port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
 			done
-			logger " CPU 负载拥堵,关闭 adbyby 程序,关闭 8118 代理端口..."
-			loger "【$LOGTIME】"" adbyby 已关闭全部8118透明代理端口..."
+			loger "【$LOGTIME】"" adbyby CPU 负载拥堵,已关闭全部8118透明代理端口..."
 			killall adbyby
 			sed -i '/adb/d' /etc/storage/post_wan_script.sh
 			loger "【$LOGTIME】"" adbyby 进程已成功关闭..."
