@@ -26,11 +26,11 @@ func_See_CPULoad(){
 }
 
 func_See_port(){
-	port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
+	port=`iptables -t nat -L |grep 'ports 8118' |wc -l`
 }
 
 func_See_PIDS(){
-	PIDS=$(ps | grep "$adbybydir/adbyby/bin/adbyby" | grep -v "grep" | wc -l)
+	PIDS=`ps |grep "$Ad_Home/bin/adbyby" |grep -v "grep" |wc -l`
 }
 
 [ ! -f $LOGFILE ] && touch $LOGFILE
@@ -51,9 +51,9 @@ sleep 60
 			loger "adbyby 已关闭全部8118透明代理端口..."
 			killall adbyby
 			sed -i '/adb/d' /etc/storage/post_wan_script.sh
-			loger "adbyby 进程已成功关闭..."
+			logger "adbyby" "CPU 负载正常"
 		done
-		rm -f /tmp/cron_adb. lock
+		rm -f /tmp/cron_adb.lock
 	done
 	func_See_PIDS
 	while [ $PIDS -eq 0 ]
@@ -67,7 +67,7 @@ sleep 60
 	while [ $PIDS -gt 6 ]
 	do
 		loger "注意:发现 adbyby 多于6个进程,将重启 adbyby!"
-		ps |grep "$Ad_Home/bin/adbyby" | grep -v 'grep' | awk '{print $1}' |xargs kill -9
+		ps |grep "$Ad_Home/bin/adbyby" |grep -v 'grep' |awk '{print $1}' |xargs kill -9
 		logger "注意: adbyby 多于6个进程,将重启 adbyby!" && /tmp/adb/adbyby.sh
 		func_Open_port
 		exit 0
@@ -87,3 +87,4 @@ sleep 60
 		func_See_port
 	done
 done
+
