@@ -26,11 +26,11 @@ func_See_CPULoad(){
 }
 
 func_See_port(){
-	port=`iptables -t nat -L | grep 'ports 8118' | wc -l`
+	port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
 }
 
 func_See_PIDS(){
-	PIDS=`ps | grep "$adbybydir/adbyby/bin/adbyby" | grep -v "grep" | wc -l`
+	PIDS=$(ps | grep "$adbybydir/adbyby/bin/adbyby" | grep -v "grep" | wc -l)
 }
 
 [ ! -f $LOGFILE ] && touch $LOGFILE
