@@ -7,6 +7,7 @@ LOGFILE=/var/log/adbyby_watchdog.log
 [ ! -f $LOGFILE ] && touch $LOGFILE
 
 loger(){
+	LOGSIZE=$(wc -c < $LOGFILE)
 	[ $LOGSIZE -ge 1000 ] && sed -i -e 1,10d $LOGFILE
 	time=$(date "+%H:%M:%S")
 	echo "$time adbyby_watchdog $1" >> $LOGFILE
@@ -29,8 +30,8 @@ while true; do
 			killall adbyby
 			sed -i '/adb/d' /etc/storage/post_wan_script.sh
 			processor=`cat /proc/cpuinfo| grep "processor"| wc -l`
-			processor2=`expr $processor \* 2`
-			if [[ "$CPULoad" -gt "$processor2" ]]; then
+			processor=`expr $processor \* 2`
+			if [[ "$CPULoad" -gt "$processor" ]]; then
 				sleep 45;CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
 			fi
 			logger -t "adbyby CPU 负载正常"
@@ -65,3 +66,4 @@ while true; do
 		port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
 	fi
 done
+
