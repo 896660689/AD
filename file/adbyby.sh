@@ -25,7 +25,7 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	if [ -f "/etc/storage/cron/crontabs/$username" ]; then
 		grep "adb" /etc/storage/cron/crontabs/$username
 		if [ $? -eq 0 ]; then
-			echo "YES"
+			echo "存在 adbyby 定时更新计划任务"
 		else
 			sed -i '$a 30 5 * * * /bin/sh /tmp/adb/ad_up >/dev/null 2>&1' /etc/storage/cron/crontabs/$username
 			logger "adbyby 添加定时更新任务..."
@@ -50,7 +50,6 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	logger "adbyby" "adbyby 开始运行..."
 	chmod 777 "$ad_home/bin/adbyby" && /tmp/adb/bin/stopadb; /tmp/adb/bin/startadb
 	echo -e "\033[41;37m adbyby 开始运行... \e[0m\n"
-	nohup /tmp/adb/ad_gz >> /var/log/adbyby_watchdog.log 2>&1 &
 	sleep 3
 	check=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" | wc -l)
 	if [ "$check" = 0 ]; then
@@ -59,8 +58,9 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 	else
 		port=`iptables -t nat -L |grep 'ports 8118' |wc -l`
 		[ $port -eq 0 ] && iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
-		logger "adbyby" "adbyby 进程守护已启动..."
 	fi
+	logger "adbyby" "adbyby 进程守护已启动..."
+	nohup /tmp/adb/ad_gz >> /var/log/adbyby_watchdog.log 2>&1 &
 	echo -e "\e[1;31m adbyby 开始更新规则... \e[0m" && logger "adbyby 开始更新规则..."
 	/tmp/adb/ad_up && sleep 3; exit 0
 else
