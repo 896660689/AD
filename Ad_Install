@@ -15,11 +15,13 @@ echo -e "\e[1;33m >	4. 安装 \e[1;33mpadavan \033[44;37m HSOSTS 广告屏蔽脚
 
 echo -e "\e[1;31m >	5. 卸载 \e[1;36mpadavan	HSOSTS 广告屏蔽脚本\e[0m\n"
 
-echo -e "\e[1;33m >	6. 安装 \e[1;33mpadavan \033[45;37m 创建 Dns 环境 \e[0m\n"
+echo -e "\e[1;33m >	6. 优化 \e[1;33mpadavan \033[45;37m 系统 Dns 环境配置 \e[0m\n"
 
-echo -e "\e[1;31m >	7. 卸载 \e[1;36mpadavan	恢复 Dns 环境 \e[0m\n"
+echo -e "\e[1;31m >	7. 恢复 \e[1;36mpadavan	Dns 默认环境 \e[0m\n"
 
-echo -e "\e[1;33m >	8. 增强 \e[1;33mpadavan \033[45;37m 防火墙规则 \e[0m\n"
+echo -e "\e[1;33m >	8. 增强 \e[1;33mpadavan \033[45;37m 增强防火墙增强规则 \e[0m\n"
+
+echo -e "\e[1;31m >	7. 关闭 \e[1;36mpadavan	防火墙增强规则 \e[0m\n"
 
 echo -e "\e[1;31m >	0. \033[41;37m退出\e[0m\n"
 
@@ -110,7 +112,7 @@ if [ "$Function_options" == "6" ]; then
 		echo -e "\e[1;34m 存在Dns文件,开始安装 \e[0m\n" && sleep 3
 	fi
 	[ -f /tmp/dns.sh ] && rm -f /tmp/dns.sh
-	echo -e "\e[1;34m DNS 环境配置完成，返回主菜单 \e[0m\n" && logger " DNS 环境配置完成..." && sleep 3
+	echo -e "\e[1;34m 优化 DNS 环境配置完成 \e[0m\n" && logger " 系统 DNS 环境配置优化完成..." && sleep 3
 	sh /tmp/Ad_Install
 fi
 
@@ -147,7 +149,7 @@ if [ "$Function_options" == "7" ]; then
 		echo -e "\e[1;31m 重启 dnsmasq \e[0m\n"
 		restart_dhcpd && /usr/sbin/dnsmasq restart >/dev/null 2>&1
 	fi
-	echo -e "\e[1;34m-- Hsfq 卸载完毕,返回主菜单--\e[0m\n" && logger " DNS 环境配置完成..." && sleep 3
+	echo -e "\e[1;34m DNS 环境配置已恢复 \e[0m\n" && logger " 已恢复 DNS 系统默认环境..." && sleep 3
 	sh /tmp/Ad_Install
 fi
 
@@ -156,7 +158,16 @@ if [ "$Function_options" == "8" ]; then
 	[ -f /tmp/hsfq_script.sh ] && rm -rf /tmp/hsfq_script.sh
 	wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/Other/FHQ_ZQ -O \
 	/tmp/fhq_zq && chmod +x /tmp/fhq_zq && sh /tmp/fhq_zq
-	echo -e "\e[1;36m 完成 padavan 防火墙增强规则 \e[0m" && logger "padavan 防火墙规则,添加完成..." && sleep 3 
+	echo -e "\e[1;36m 已开启 padavan 防火墙增强规则 \e[0m" && logger "padavan 防火墙增强规则已开启..." && sleep 3 
+	sh /tmp/Ad_Install
+fi
+
+if [ "$Function_options" == "9" ]; then
+	if [ -f "/etc/storage/post_iptables_script.sh" ]; then
+		grep "FORWARD" /etc/storage/post_iptables_script.sh
+		[ $? -eq 0 ] && sed -i '/FORWARD/d' /etc/storage/post_iptables_script.sh
+	fi
+	echo -e "\e[1;36m 已关闭 padavan 防火墙增强规则 \e[0m" && logger "padavan 防火墙增强规则已关闭..." && sleep 3 
 	sh /tmp/Ad_Install
 fi
 
