@@ -31,14 +31,14 @@ while true; do
 			killall adbyby
 			sed -i '/adb/d' /etc/storage/post_wan_script.sh
 			processor=`cat /proc/cpuinfo| grep "processor"| wc -l`
-			processor=`expr $processor \* 2`
-			if [[ "$CPULoad" -gt "$processor" ]]; then
-				sleep 30 && CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
+			processor2=`expr $processor \* 2`
+			if [[ "$CPULoad" -gt "$processor2" ]]; then
+				sleep 45;CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
 			fi
 			logger -t "adbyby CPU 负载正常"
+			rm -f /tmp/cron_adb.lock
 		fi
 	fi
-	rm -f /tmp/cron_adb.lock
 	PIDS=$(ps |grep "$Ad_Home/bin/adbyby" |grep -v "grep" |wc -l)
 	if [ $PIDS -eq 0 ]; then
 		logger "注意: adbyby 意外关闭,将重启 adbyby!"
