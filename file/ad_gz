@@ -6,7 +6,6 @@ Ad_Home="/tmp/adb"
 max_log_bytes=6000
 
 loger(){
-	[ -f $LOGFILE ] && [ $(stat -c %s $LOGFILE) -gt $max_log_bytes ] && rm -f $LOGFILE
 	time=$(date "+%H:%M:%S")
 	echo "$time adbyby_watchdog $1" >> $LOGFILE
 }
@@ -14,6 +13,10 @@ loger(){
 [ ! -f $LOGFILE ] && touch $LOGFILE
 while true; do
 	sleep 60
+	LOGSIZE=$(wc -c < $LOGFILE)
+	if [ $LOGSIZE -ge 1000 ]; then
+		sed -i -e 1,10d $LOGFILE
+	fi
 	if [ ! -f /tmp/cron_adb.lock ]; then
 		CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
 		if [ $((CPULoad)) -ge "2" ]; then
