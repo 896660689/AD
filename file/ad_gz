@@ -1,21 +1,19 @@
 #!/bin/sh
-## Adaptation Grassland in Lucheng 2019.01.10
+## Adaptation Grassland in Lucheng 2019-01-11
 
-LOGFILE=/var/log/adbyby_watchdog.log
 Ad_Home="/tmp/adb"
+LOGFILE=/var/log/adbyby_watchdog.log
+
+[ ! -f $LOGFILE ] && touch $LOGFILE
 
 loger(){
+	[ $LOGSIZE -ge 1000 ] && sed -i -e 1,10d $LOGFILE
 	time=$(date "+%H:%M:%S")
 	echo "$time adbyby_watchdog $1" >> $LOGFILE
 }
 
 while true; do
 	sleep 60
-	[ ! -f $LOGFILE ] && touch $LOGFILE
-	LOGSIZE=$(wc -c < $LOGFILE)
-	if [ $LOGSIZE -ge 1000 ]; then
-		sed -i -e 1,10d $LOGFILE
-	fi
 	if [ ! -f /tmp/cron_adb.lock ]; then
 		CPULoad=`uptime |sed -e 's/\ *//g' -e 's/.*://g' -e 's/,.*//g' -e 's/\..*//g'`
 		if [ $((CPULoad)) -ge "2" ]; then
