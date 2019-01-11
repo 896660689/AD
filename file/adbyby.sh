@@ -9,7 +9,7 @@ ad_home="/tmp/adb"
 if [ -f "$ad_home/bin/adbyby" ]; then
 	port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
 	if [[ "$port" -ge 1 ]]; then
-		logger "adbyby" "找到$port个 8118 透明代理端口,正在关闭..."
+		logger "adbyby" "找到 $port 个 8118 透明代理端口,正在关闭..."
 		iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 		port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
 	fi
@@ -38,28 +38,28 @@ if [ -f "$ad_home/bin/adbyby" ]; then
 		ad_whost=$ad_home/ad_whost
 		if [ "$ad_whost" != "" ] ; then
 			logger "adbyby" "添加过滤白名单地址"
-			echo -e "\e[1;31m  添加过滤白名单地址 \e[0m"
 			chmod 777 "$ad_home/bin/adhook.ini"
 			sed -Ei '/whitehost=/d' "$ad_home/bin/adhook.ini"
 			echo whitehost=$ad_whost >> "$ad_home/bin/adhook.ini"
-			echo @@\|http://\$domain=$(echo $ad_whost | tr , \|) >> $ad_home/bin/data/user.txt
+			echo @@\|http://\$domain=$(echo $ad_whost | tr , \|) >> "$ad_home/bin/data/user.txt"
+			echo -e "\e[1;31m  添加过滤白名单地址 \e[0m"
 		else
 			echo -e "\e[1;31m 过滤白名单地址未定义,已忽略 \e[0m"
 		fi
 	fi
-	logger "adbyby" "adbyby 开始运行..."
+	logger "adbyby 开始运行..."
 	chmod 777 "$ad_home/bin/adbyby" && /tmp/adb/bin/stopadb; /tmp/adb/bin/startadb
 	echo -e "\033[41;37m adbyby 开始运行... \e[0m\n"
 	sleep 3
 	check=$(ps |grep "$ad_home/bin/adbyby" |grep -v "grep" | wc -l)
 	if [ "$check" = 0 ]; then
-		logger "adbyby" "adbyby 启动失败..."
+		logger "adbyby 启动失败;退出..."
 		exit 0
 	else
 		port=`iptables -t nat -L |grep 'ports 8118' |wc -l`
 		[ $port -eq 0 ] && iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
 	fi
-	logger "adbyby" "adbyby 进程守护已启动..."
+	logger "adbyby 进程守护已启动..."
 	nohup /tmp/adb/ad_gz >> /var/log/adbyby_watchdog.log 2>&1 &
 	echo -e "\e[1;31m adbyby 开始更新规则... \e[0m" && logger "adbyby 开始更新规则..."
 	/tmp/adb/ad_up && sleep 3; exit 0
