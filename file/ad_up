@@ -7,6 +7,7 @@ if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 	touch /tmp/lazy.txt && wget --no-check-certificate "https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/lazy.txt" -O /tmp/lazy.txt
 	touch /tmp/video.txt && wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt -O /tmp/video.txt
 	mv -f /tmp/lazy.txt /tmp/adb/bin/data/lazy.txt
+	mv -f /tmp/video.txt /tmp/adb/bin/data/video.txt
 	touch /tmp/local-md5.json && md5sum /tmp/lazy.txt /tmp/video.txt > /tmp/local-md5.json
 	touch /tmp/md5.json && wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/md5.json -O /tmp/md5.json
 
@@ -18,7 +19,7 @@ if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 	if [ "$lazy_online"x == "$lazy_local"x -a "$video_online"x == "$video_local"x ]; then
 		echo "adbyby rules MD5 OK!" 
 		#mv -f /tmp/lazy.txt /tmp/adb/bin/data/lazy.txt
-		mv -f /tmp/video.txt /tmp/adb/bin/data/video.txt
+		#mv -f /tmp/video.txt /tmp/adb/bin/data/video.txt
 		echo $(date +%F) > /tmp/adb/bin/adbybyupdate.sh
 		logger "adbyby mem mode rules updated!"
 	fi
