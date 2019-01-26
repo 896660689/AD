@@ -17,13 +17,13 @@ if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 	video_online=$(sed  's/":"/\n/g' /tmp/md5.json  |  sed  's/","/\n/g' | sed -n '4p')
 
 	if [ "$lazy_online"x == "$lazy_local"x -a "$video_online"x == "$video_local"x ]; then
-		echo "adbyby rules MD5 OK!"
-		sed -i '/3g.163.com/d' /tmp/lazy.txt 
+		echo "adbyby rules MD5 OK!" 
 		mv -f /tmp/lazy.txt /tmp/adb/bin/data/lazy.txt
 		mv -f /tmp/video.txt /tmp/adb/bin/data/video.txt
 		echo $(date +%F) > /tmp/adb/bin/adbybyupdate.sh
 		logger "adbyby mem mode rules updated!"
 	fi
+	sed -i '/3g.163.com/d' /tmp/adb/bin/data/lazy.txt
 	rm -f /tmp/adbyby.mem /tmp/lazy.txt /tmp/video.txt /tmp/local-md5.json /tmp/md5.json
 	rm -f /tmp/adb/bin/data/*.bak
 	sleep 3
