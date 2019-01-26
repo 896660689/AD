@@ -4,8 +4,8 @@
 if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 	touch /tmp/adbyby.mem
 	wget -s -q -T 3 www.baidu.com
-	touch /tmp/lazy.txt && wget --no-check-certificate -T 10 -qO https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/lazy.txt /tmp/lazy.txt
-	sed -i '/3g.163.com/d' /tmp/lazy.txt
+	touch /tmp/lazy.txt && wget --no-check-certificate -T 10 -qO https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/lazy.txt \
+	|sed -i '/3g.163.com/d' > /tmp/lazy.txt
 	touch /tmp/video.txt && wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt -O /tmp/video.txt
 
 	touch /tmp/local-md5.json && md5sum /tmp/lazy.txt /tmp/video.txt > /tmp/local-md5.json
