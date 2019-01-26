@@ -4,7 +4,7 @@
 if [ -f "/tmp/adb/bin/adbybyupdate.sh" ];then
 	touch /tmp/adbyby.mem
 	wget -s -q -T 3 www.baidu.com
-	touch /tmp/lazy.txt && wget --no-check-certificate -q https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/lazy.txt /tmp/lazy.txt
+	touch /tmp/lazy.txt && wget --no-check-certificate -q https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/lazy.txt -O /tmp/lazy.txt
 	sleep 3 && sed -i '/3g.163.com/d' /tmp/lazy.txt
 	touch /tmp/video.txt && wget --no-check-certificate https://coding.net/u/adbyby/p/xwhyc-rules/git/raw/master/video.txt -O /tmp/video.txt
 
