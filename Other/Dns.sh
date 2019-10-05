@@ -17,9 +17,9 @@ if [ ! -f "/etc/storage/dnsmasq.d/resolv.conf" ]; then
 nameserver 127.0.0.1
 ## 根据网络环境选择DNS.最多6个地址按速排序
 nameserver 114.114.115.115
-nameserver 208.67.222.222
+nameserver 182.254.116.116
 nameserver 223.5.5.5
-nameserver 176.103.130.131
+nameserver 208.67.222.222
 nameserver 8.8.4.4
 EOF
 fi
