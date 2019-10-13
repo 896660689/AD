@@ -14,7 +14,7 @@ fi
 
 if [ ! -f "$ad_home/bin/adbyby" ]; then
 	logger "adbyby 程序文件不存在,准备下载..."
-	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/program/adbyby.tar.gz -O /tmp/7620n.tar.gz && sleep 2
+	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/program/adbyby .tar.gz -O /tmp/7620n.tar.gz && sleep 2
 	tar -xzf "/tmp/7620n.tar.gz" -C $ad_home && sleep 2 && rm -R /tmp/7620n.tar.gz
 	wget --no-check-certificate -t 15 -T 50 https://raw.githubusercontent.com/896660689/AD/master/file/adbyby.sh -O /tmp/tmp_adbyby
 	sleep 2 && mv -f /tmp/tmp_adbyby $ad_home/adbyby.sh && chmod 777 /tmp/adb/adbyby.sh
