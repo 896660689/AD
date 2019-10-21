@@ -19,11 +19,6 @@ if [ -f "$Firewall_rules" ]; then
 		echo "iptables -I FORWARD -p tcp --tcp-flags SYN,ACK,FIN,RST RST -m limit --limit 1/s -d $route_vlan -j ACCEPT" >> "$Firewall_rules"
 		echo "iptables -I FORWARD -p icmp --icmp-type echo-request -d $route_vlan -j DROP" >> "$Firewall_rules"
 		echo "iptables -I FORWARD -p icmp --icmp-type echo-request -m limit --limit 2/s -d $route_vlan -j ACCEPT" >> "$Firewall_rules"
-//		echo "ip6tables -F" >> "$Firewall_rules"
-//		echo "ip6tables -X" >> "$Firewall_rules"
-//		echo "ip6tables -P INPUT ACCEPT" >> "$Firewall_rules"
-//		echo "ip6tables -P OUTPUT ACCEPT" >> "$Firewall_rules"
-//		echo "ip6tables -P FORWARD ACCEPT" >> "$Firewall_rules"
 		echo -e "\e[1;34m 防火墙增强规则-安装完成 \e[0m\n" && logger " padavan 防火墙增强规则-安装完成..." && sleep 3
 	fi
 fi
