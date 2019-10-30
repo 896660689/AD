@@ -16,11 +16,12 @@ if [ ! -f "/etc/storage/dnsmasq.d/resolv.conf" ]; then
 ## DNS解析服务器设置
 nameserver 127.0.0.1
 ## 根据网络环境选择DNS.最多6个地址按速排序
-nameserver 114.114.115.115
+nameserver 114.114.115.110
 nameserver 182.254.116.116
 nameserver 223.5.5.5
 nameserver 208.67.222.222
 nameserver 8.8.4.4
+nameserver 240c::6666
 EOF
 fi
 chmod 644 /etc/storage/dnsmasq.d/resolv.conf && chmod 644 /etc/resolv.conf
