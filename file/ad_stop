@@ -1,5 +1,5 @@
 #!/bin/sh
-## Adaptation Grassland in Lucheng 2019.01.10
+## Adaptation Grassland in Lucheng 2019.11.26
 
 username=`nvram get http_username`
 ad_home="/tmp/adb"
