@@ -56,7 +56,8 @@ while true; do
 	port=$(iptables -t nat -L | grep 'ports 8118' | wc -l)
 	if [ $port -eq 0 ]; then
 		loger "注意: adbyby 防火墙转发规则丢失,将添加规则!"
-		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118
+		iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8118 && \
+		iptables save
 		logger "注意: adbyby 防火墙转发规则丢失,将添加规则"
 	fi
 	if [ $port -gt 1 ]; then
