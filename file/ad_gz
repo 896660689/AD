@@ -1,5 +1,5 @@
 #!/bin/sh
-## Adaptation Grassland in Lucheng 2019-01-11
+## Adaptation Grassland in Lucheng 2019-11-26
 
 Ad_Home="/tmp/adb"
 LOGFILE=/var/log/adbyby_watchdog.log
