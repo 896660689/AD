@@ -49,7 +49,8 @@ else
 	then
 		sed -i '/adb/d' $Run_script
 	fi
-	restart_dhcpd && sleep 3 && echo -e "\e[1;31m adbyby 卸载完成... \e[0m"
+	restart_dhcpd && restart_firewall && sleep 3 && \
+	echo -e "\e[1;31m adbyby 卸载完成... \e[0m"
 fi
 [ -f /var/log/adbyby_watchdog.log ] && rm -f /var/log/adbyby_watchdog.log
 [ -d /tmp/adb ] && rm -R /tmp/adb; sleep 3;[ -f /tmp/cron_adb.lock ] && rm -f /tmp/cron_adb.lock
