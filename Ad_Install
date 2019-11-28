@@ -70,7 +70,8 @@ fi
 
 if [ "$Function_options" == "4" ]; then
 	[ -f /tmp/hsfq_script.sh ] && rm -rf /tmp/hsfq_script.sh
-	wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/Other/Hs_ad -O \
+	##wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/Other/Hs_ad -O \
+	wget --no-check-certificate https://raw.githubusercontent.com/896660689/AD/master/Other/Hs_ad0 -O \
 	/tmp/hsfq_ssad.sh && chmod +x /tmp/hsfq_ssad.sh && sh /tmp/hsfq_ssad.sh
 	echo -e "\e[1;34m HSOSTS 广告屏蔽脚本配置完成，返回主菜单 \e[0m\n" && logger " HSOSTS 广告屏蔽脚本配置完成..." && sleep 3 
 	sh /tmp/Ad_Install
