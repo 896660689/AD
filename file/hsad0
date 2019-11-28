@@ -1,0 +1,26 @@
+#!/bin/sh
+# Compile:by-lanse    2019-11-28
+
+echo -e "\e[1;36m 下载 'winhelp200''adblock' 屏蔽广告规则 \e[0m\n"
+TMP_AD=/tmp/tmp_ad
+TMP_AD1=/tmp/tmp_ad1
+AD=/tmp/ad
+
+[ -f ${AD} ] && rm -rf ${AD}; [ -f ${TMP_AD1} ] && rm -rf ${TMP_AD1}
+for URL in \
+	"http://winhelp2002.mvps.org/hosts.txt"
+do
+	wget -t 15 -T 50 --no-check-certificate -O- "${URL}" \
+	| sed -E -e "s/#.*$//" -e "/^$/d" -e "/::/d" -e "/localhos/d" -e "s/[[:space:]][[:space:]]*/ /g" >> ${TMP_AD}
+done
+
+wget -t 15 -T 50 --no-check-certificate -O- http://git.oschina.net/halflife/list/raw/master/ad.txt \
+| grep ^\|\|[^\*]*\^$ | sed -e "s:||:0.0.0.0 :"  -e "s/.$//" >> ${TMP_AD1}
+
+cat ${TMP_AD} ${TMP_AD1} > ${AD}
+#sort -n ${TMP_AD} |uniq >> ${AD}
+
+sleep 2
+echo -e "\033[45;37m 'Hosts_Ad' 规则下载完成 \033[0m\n"
+# 删除临时缓存
+rm -rf ${TMP_AD} ${TMP_AD1} 2> /dev/null
