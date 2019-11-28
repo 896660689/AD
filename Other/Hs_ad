@@ -21,6 +21,13 @@ if [ -f "/etc/storage/cron/crontabs/$username" ]; then
 	killall crond;/usr/sbin/crond
 fi
 
+# 下载 'SSH 端口扫描' IP 黑名单
+echo -e "\033[41;37m 下载（SSH 端口扫描 IP 黑名单）……\033[0m"
+echo -e "\n"
+wget --no-check-certificate -t 30 -T 80 https://raw.githubusercontent.com/896660689/AD/master/file/ssh_ip_defense.conf -qO \
+/tmp/ssh_ip_defense.conf && sleep 2 && chmod +x /tmp/ssh_ip_defense.conf && \
+mv -f /tmp/ssh_ip_defense.conf /etc/storage/bin/hosts/ssh_ip_defense.conf
+
 echo -e "\e[1;36m HOSTS 去广告规则开始下载... \e[0m"
 echo -e "\n"
 
