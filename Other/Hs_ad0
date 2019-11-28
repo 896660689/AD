@@ -34,7 +34,7 @@ echo -e "\n"
 # 下载 HOSTS 组合规则
 echo -e "\033[41;37m 组合下载时间较长.请耐心等待……\033[0m"
 echo -e "\n"
-wget --no-check-certificate -t 30 -T 80 https://raw.githubusercontent.com/896660689/Hsfq/master/hsad -qO \
+wget --no-check-certificate -t 30 -T 80 https://raw.githubusercontent.com/896660689/AD/master/file/hsad0 -qO \
 /tmp/ad.conf && sleep 2 && chmod +x /tmp/ad.conf && . /tmp/ad.conf
 
 # 合并 hosts 缓存
